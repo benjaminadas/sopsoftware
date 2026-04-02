@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// A Project groups related documents (e.g. "FB DM Outreach", "IG Legion")
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  platform    String?  // FB, IG, General, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  documents   Document[]
+}
+
+// A Document is any piece of documentation: SOP, Global Variables, Learnings, Metrics, etc.
+model Document {
+  id             String       @id @default(cuid())
+  docId          String       @unique  // e.g. SOP-SYS-IG-002, SYS-VARS-FB-003-FB
+  name           String
+  description    String?
+  docType        String       @default("SOP")  // SOP | GLOBAL_VARS | LEARNINGS | METRICS | TEMPLATE_DOC
+  funnelStage    String       @default("General")  // free text: "Global – Messaging & Booking"
+  owner          String
+  department     String?      // e.g. "Systems / Operations"
+  channel        String?      // e.g. "Facebook DM", "Instagram DM"
+  platform       String?      // FB, IG, General
+  currentVersion Int          @default(1)
+  projectId      String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  project        Project?     @relation(fields: [projectId], references: [id])
+  versions       DocVersion[]
+  tags           DocTag[]
+
+  @@index([docType])
+  @@index([funnelStage])
+  @@index([projectId])
+  @@index([platform])
+}
+
+model DocVersion {
+  id          String   @id @default(cuid())
+  documentId  String
+  version     Int                       // 1, 2, 3...
+  versionName String?                   // e.g. "v3.0", "v1.1"
+  content     String                    // TipTap JSON
+  contentText String   @default("")     // plain text for search
+  changeNote  String?
+  createdAt   DateTime @default(now())
+  createdBy   String   @default("Admin")
+
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, version])
+  @@index([documentId])
+}
+
+model Tag {
+  id   String     @id @default(cuid())
+  name String     @unique
+  slug String     @unique
+
+  docs DocTag[]
+}
+
+model DocTag {
+  documentId String
+  tagId      String
+
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([documentId, tagId])
+}
+
+// Reusable starter templates
+model Template {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  docType     String   @default("SOP")
+  content     String   // TipTap JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Atomic counter for each doc ID prefix to avoid collisions
+model Counter {
+  id    String @id   // e.g. "SOP-SYS-IG", "SYS-VARS-FB"
+  value Int    @default(0)
+}
