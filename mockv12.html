@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>E&amp;C Docs — v12</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#000;--sidebar:#0a0a0a;--card:#111;--border:#1e1e1e;--border-h:#3a3a3a;
+  --text:#e8e8e8;--muted:#888;--dim:#444;--link:#c084fc;
+  --act:rgba(255,255,255,.07);--modal:#111;--inp:#0a0a0a;--danger:#e74c3c;
+}
+[data-theme=light]{
+  --bg:#f9f9f9;--sidebar:#fff;--card:#fff;--border:#e5e5e5;--border-h:#aaa;
+  --text:#111;--muted:#666;--dim:#aaa;--link:#1a73e8;
+  --act:rgba(0,0,0,.06);--modal:#fff;--inp:#f0f0f0;--link:#7c3aed;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;font-size:14px}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2e2e2e;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#3d3d3d}
+[data-theme=light] ::-webkit-scrollbar-thumb{background:#ccc}
+[data-theme=light] ::-webkit-scrollbar-thumb:hover{background:#aaa}
+/* GLOBAL AURORA */
+#aurora-global{position:fixed;inset:0;z-index:5;pointer-events:none;display:none}
+#aurora-global.show{display:block}
+/* SIDEBAR */
+.sb{width:220px;min-width:220px;background:var(--sidebar);display:flex;flex-direction:column;height:100vh;overflow:hidden;position:relative;z-index:20}
+.sb-logo{padding:16px 16px 10px;cursor:pointer;display:flex;align-items:center;gap:1px}
+.sb-logo:hover{opacity:.8}
+.logo-brand{font-size:24px;font-weight:700;color:var(--text);letter-spacing:.3px;font-family:'Times New Roman',serif}
+.logo-docs{font-size:24px;font-weight:700;color:var(--muted);font-family:'Times New Roman',serif}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 0 4px}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+/* nav items */
+.ni{display:flex;align-items:center;padding:8px 14px;cursor:pointer;font-size:14px;font-weight:500;color:#999;transition:background .12s,color .12s;position:relative;gap:0}
+.ni:hover{background:var(--act);color:#e0e0e0}
+.ni.act{background:var(--act);color:var(--text)}
+.ni .chev{width:14px;height:14px;flex-shrink:0;margin-right:3px;transition:transform .18s;display:flex;align-items:center;justify-content:center;opacity:.5}
+.ni .chev.open{transform:rotate(90deg)}
+.ni .chev.hide{visibility:hidden}
+.ni .ico{width:15px;height:15px;flex-shrink:0;margin-right:8px;stroke:#666;opacity:1;fill:none}
+[data-theme=light] .ni .ico{stroke:#333}
+.ni .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni .ec{display:none;gap:3px;margin-left:4px}
+.edit-mode .ni .ec{display:flex}
+.ecb{width:17px;height:17px;border:1px solid var(--border);background:0;color:var(--muted);border-radius:3px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+.ecb:hover{background:var(--act);color:var(--text)}
+/* children */
+.nc{display:none;padding:2px 0}
+.nc.open{display:block}
+.nci{display:flex;align-items:center;padding:6px 14px 6px 51px;cursor:pointer;font-size:13px;font-weight:400;color:#666;transition:color .12s,background .12s;position:relative}
+.nci:hover{color:#ccc;background:var(--act)}
+.nci.act{color:var(--text);font-weight:600}
+.nci .lbl{flex:1}
+.nci .chev{position:absolute;left:36px;top:50%;transform:translateY(-50%);width:12px;height:12px;transition:transform .18s;display:flex;align-items:center;justify-content:center;opacity:.45}
+.nci .chev.open{transform:translateY(-50%) rotate(90deg)}
+.nci .ec{display:none;gap:3px;margin-left:4px}
+.edit-mode .nci .ec{display:flex}
+/* level 2 children */
+.nc2{display:none;padding:2px 0}
+.nc2.open{display:block}
+.nci2{display:flex;align-items:center;padding:5px 14px 5px 66px;cursor:pointer;font-size:12.5px;font-weight:400;color:#555;transition:color .12s,background .12s;position:relative}
+.nci2:hover{color:#bbb;background:var(--act)}
+.nci2.act{color:var(--text);font-weight:600}
+.nci2 .chev2{position:absolute;left:51px;top:50%;transform:translateY(-50%);width:11px;height:11px;transition:transform .18s;display:flex;align-items:center;justify-content:center;opacity:.4}
+.nci2 .chev2.open{transform:translateY(-50%) rotate(90deg)}
+/* light mode nav */
+[data-theme=light] .ni{color:#333}
+[data-theme=light] .ni:hover{color:#000}
+[data-theme=light] .ni.act{color:#000}
+[data-theme=light] .nci{color:#555}
+[data-theme=light] .nci:hover{color:#111}
+[data-theme=light] .nci.act{color:#000}
+[data-theme=light] .nci2{color:#666}
+[data-theme=light] .nci2:hover{color:#111}
+[data-theme=light] .nci3{color:#777}
+[data-theme=light] .nci3:hover{color:#111}
+/* level 3 children */
+.nc3{display:none;padding:2px 0}
+.nc3.open{display:block}
+.nci3{padding:5px 14px 5px 80px;cursor:pointer;font-size:12px;color:#444;transition:color .12s,background .12s}
+.nci3:hover{color:#aaa;background:var(--act)}
+.nci3.act{color:var(--text);font-weight:600}
+/* footer */
+.sb-foot{padding:10px 14px;display:flex;align-items:center;gap:8px;position:relative}
+.sb-foot-lbl{font-size:12px;color:var(--muted);flex:1}
+.iBtn{background:0;border:none;color:var(--muted);cursor:pointer;padding:5px;border-radius:5px;display:flex;align-items:center;justify-content:center;transition:background .12s,color .12s}
+.iBtn:hover{background:var(--act);color:var(--text)}
+[data-theme=light] .iBtn{color:#333}
+[data-theme=light] .iBtn:hover{color:#000}
+.gmenu{position:absolute;bottom:46px;right:8px;background:var(--modal);border:1px solid var(--border);border-radius:8px;padding:4px;display:none;z-index:300;min-width:148px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.gmenu.show{display:block}
+.gmi{padding:8px 12px;font-size:13px;cursor:pointer;border-radius:5px;color:var(--text)}
+.gmi:hover{background:var(--act)}
+.add-cat{display:none;margin:4px 10px;padding:7px 12px;border:1px dashed var(--border);border-radius:6px;background:0;color:var(--muted);cursor:pointer;font-size:12px;font-family:inherit;text-align:left;width:calc(100% - 20px);transition:border-color .12s,color .12s}
+.edit-mode .add-cat{display:block}
+.add-cat:hover{border-color:var(--muted);color:var(--text)}
+/* TOPBAR */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:2}
+.tb{height:52px;display:flex;align-items:center;padding:0 20px;flex-shrink:0;position:relative;z-index:15;background:transparent}
+[data-theme=light] .tb{background:#fff}
+body.home-active .aurora{display:none}
+body.home-active [data-theme=dark] .hero{background:transparent!important}
+.tb .sp{flex:1}
+.srch{display:flex;align-items:center;gap:8px;background:var(--inp);border:1px solid var(--border);border-radius:8px;padding:0 12px;width:480px;position:absolute;left:50%;transform:translateX(-50%)}
+.srch svg{opacity:.5;flex-shrink:0;stroke:var(--text)}
+[data-theme=light] .srch svg{stroke:#333;opacity:.6}
+.srch input{background:0;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;padding:9px 0;width:100%}
+.srch input::placeholder{color:var(--muted)}
+.kbd{font-size:11px;color:var(--dim);border:1px solid var(--border);border-radius:4px;padding:1px 5px;flex-shrink:0}
+.tb-r{display:flex;align-items:center;gap:8px}
+.crBtn{background:var(--text);color:var(--bg);border:none;padding:7px 15px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .12s}
+.crBtn:hover{opacity:.85}
+/* SCREENS */
+.ca{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative;z-index:10}
+.scr{display:none;flex-direction:column;flex:1;overflow:hidden}
+.scr.on{display:flex}
+#s-home{overflow-y:auto}
+/* HOME */
+.hero{padding:56px 40px;text-align:center;position:relative;overflow:hidden}
+[data-theme=dark] .hero{background:#000}
+[data-theme=light] .hero{background:linear-gradient(180deg,rgba(253,246,240,.95) 0%,rgba(232,244,248,.9) 50%,rgba(249,249,249,0) 100%)}
+/* AURORA */
+.aurora{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ab{position:absolute;border-radius:50%;filter:blur(90px)}
+.ab1{width:520px;height:320px;background:radial-gradient(circle,rgba(107,33,168,.7) 0%,transparent 70%);top:-100px;left:-80px;animation:ab1 9s ease-in-out infinite alternate}
+.ab2{width:440px;height:300px;background:radial-gradient(circle,rgba(157,23,77,.65) 0%,transparent 70%);top:-80px;right:-40px;animation:ab2 11s ease-in-out infinite alternate}
+.ab3{width:600px;height:220px;background:radial-gradient(circle,rgba(30,58,138,.55) 0%,transparent 70%);bottom:-80px;left:50%;transform:translateX(-50%);animation:ab3 13s ease-in-out infinite alternate}
+.ab4{width:300px;height:200px;background:radial-gradient(circle,rgba(190,24,93,.4) 0%,transparent 70%);top:20px;left:35%;animation:ab4 7s ease-in-out infinite alternate}
+@keyframes ab1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(130px,50px) scale(1.25)}}
+@keyframes ab2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-110px,35px) scale(1.2)}}
+@keyframes ab3{0%{transform:translateX(-50%) scale(1)}100%{transform:translateX(-40%) scale(1.15)}}
+@keyframes ab4{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-60px,30px) scale(1.3)}}
+[data-theme=light] .ab1{background:radial-gradient(circle,rgba(255,60,130,.55) 0%,transparent 70%)}
+[data-theme=light] .ab2{background:radial-gradient(circle,rgba(100,60,255,.5) 0%,transparent 70%)}
+[data-theme=light] .ab3{background:radial-gradient(circle,rgba(0,140,255,.45) 0%,transparent 70%)}
+[data-theme=light] .ab4{background:radial-gradient(circle,rgba(255,140,20,.4) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:1}
+.hero h1{font-size:55px;font-weight:700;margin-bottom:12px;letter-spacing:-.5px;font-family:'Times New Roman',serif}
+.hero p{font-size:14px;color:var(--muted);margin-bottom:22px}
+.h-srch{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0 16px;width:480px;margin:0 auto}
+.h-srch svg{opacity:.4;flex-shrink:0}
+.h-srch input{background:0;border:none;outline:none;color:var(--text);font-size:14px;font-family:inherit;padding:12px 0;width:100%}
+.h-srch input::placeholder{color:var(--muted)}
+.h-body{padding:32px 40px}
+.s-hdg{font-size:30px;font-weight:700;text-align:center;margin-bottom:20px;color:var(--text);letter-spacing:-.3px;font-family:'Times New Roman',serif}
+.h-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:780px;margin:0 auto}
+.hcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .15s;display:flex;flex-direction:column;gap:5px}
+.hcard:hover{border-color:var(--border-h)}
+.hcard svg{width:18px;height:18px;stroke:var(--muted);flex-shrink:0;margin-bottom:2px}
+.hcard .hn{font-size:14px;font-weight:600}
+.hcard .hd{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* FOLDER PAGE */
+.fl{display:flex;flex:1;min-height:0;overflow-y:auto}
+.fc{flex:1;padding:28px 30px 28px 0;margin-left:clamp(30px,8vw,150px);max-width:900px}
+.ftoc{width:260px;min-width:220px;padding:26px 14px 26px 16px;flex-shrink:0}
+.ftoc-inner{position:sticky;top:26px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-bottom:14px}
+.bc a{color:var(--muted);text-decoration:none;cursor:pointer}
+.bc a:hover{color:var(--text)}
+.bc .bs{opacity:.4}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.pt{font-size:28px;font-weight:700;letter-spacing:-.5px}
+.ep-btn{background:0;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;margin-top:6px;transition:background .12s,color .12s}
+.ep-btn:hover{background:var(--act);color:var(--text)}
+.psub{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:13px 16px;font-size:13px;color:var(--muted);margin-bottom:18px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.pdiv{height:1px;background:var(--border);margin-bottom:24px}
+.sb2{margin-bottom:28px}
+.st{font-size:20px;font-weight:600;margin-bottom:5px}
+.sd{font-size:13px;color:var(--muted);margin-bottom:12px}
+.dcg{display:flex;flex-wrap:wrap;gap:8px}
+.dc{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:13px 15px;display:flex;align-items:center;gap:14px;transition:border-color .15s;cursor:pointer;flex:1 1 280px;min-width:0}
+.dc:hover{border-color:var(--border-h)}
+.dc .di{flex:1;min-width:0}
+.dc .dn{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc .dm{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc .db{background:var(--card);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:5px;font-size:11px;font-family:inherit;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;transition:background .12s}
+.dc .db:hover{background:var(--act)}
+/* TOC */
+.tocT{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.tocL{display:block;font-size:13px;color:var(--muted);padding:5px 0;cursor:pointer;text-decoration:none;transition:color .12s;line-height:1.4}
+.tocL:hover{color:var(--text)}
+.tocL.act{color:var(--text);font-weight:600}
+/* DOC */
+.dl{display:flex;flex:1;min-height:0;overflow-y:auto}
+.dcon{flex:1;padding:28px 30px 28px 0;margin-left:clamp(30px,8vw,150px);max-width:800px}
+.dtoc{width:260px;min-width:220px;padding:26px 14px 26px 16px;flex-shrink:0}
+.dtoc-inner{position:sticky;top:26px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.dmr{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.dms{opacity:.3}
+.dhb{margin-left:auto;background:0;border:1px solid var(--border);color:var(--muted);padding:4px 11px;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;transition:background .12s}
+.dhb:hover{background:var(--act);color:var(--text)}
+/* save banner */
+.save-banner{display:none;align-items:center;gap:10px;padding:9px 20px;background:var(--card);border-bottom:1px solid var(--border);font-size:13px;color:var(--text);flex-shrink:0;z-index:12;position:relative}
+.save-banner.show{display:flex}
+.save-banner-msg{flex:1;font-weight:500}
+.save-banner-msg span{font-weight:400;color:var(--muted);margin-left:6px;font-size:12px}
+.dbody{line-height:1.75;font-size:14px}
+.dbody h2{font-size:19px;font-weight:600;margin:26px 0 9px}
+.dbody h3{font-size:14px;font-weight:600;margin:18px 0 7px}
+.dbody p{margin-bottom:10px}
+.dbody ul{margin:7px 0 11px 22px}
+.dbody li{margin-bottom:4px}
+.dbody a{color:var(--link);text-decoration:underline}
+.dbody strong{font-weight:600}
+/* MODALS */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;display:none;align-items:center;justify-content:center}
+[data-theme=light] .ov{background:rgba(0,0,0,.35)}
+.ov.show{display:flex}
+.mod{background:var(--modal);border:1px solid var(--border);border-radius:12px;padding:22px;min-width:380px;max-width:460px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.mod-t{font-size:15px;font-weight:600;margin-bottom:16px}
+.fl2{display:flex;flex-direction:column}
+.lbl{font-size:12px;font-weight:500;color:var(--muted);display:block;margin-bottom:4px}
+.inp{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:6px;background:var(--inp);color:var(--text);font-size:13px;font-family:inherit;margin-bottom:12px;outline:none}
+.inp:focus{border-color:#555}
+.sel{width:100%;padding:8px 11px;border:none;border-radius:6px;background:var(--inp);color:var(--text);font-size:13px;font-family:inherit;margin-bottom:12px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px}
+/* type pill selector */
+.type-pills{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.type-pill{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid var(--border);background:var(--inp);color:var(--muted);transition:background .12s,color .12s,border-color .12s}
+.type-pill:hover{border-color:var(--border-h);color:var(--text)}
+.type-pill.on{background:var(--text);color:var(--bg);border-color:transparent}
+#sheet-url-wrap{overflow:hidden;max-height:0;transition:max-height .25s ease,opacity .25s ease;opacity:0}
+#sheet-url-wrap.open{max-height:80px;opacity:1}
+.ma{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+.mbtn{padding:7px 16px;border-radius:7px;font-size:13px;font-family:inherit;cursor:pointer;font-weight:500}
+.mbtn-s{background:0;border:1px solid var(--border);color:var(--text)}
+.mbtn-s:hover{background:var(--act)}
+.mbtn-p{background:var(--text);color:var(--bg);border:1px solid transparent}
+.mbtn-p:hover{opacity:.85}
+.mbtn-d{background:0;border:1px solid var(--danger);color:var(--danger);font-weight:600}
+.mbtn-d:hover{background:var(--danger);color:#fff}
+/* folder picker */
+.fkr{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.fkr-bc{display:flex;align-items:center;gap:6px;padding:8px 11px;background:var(--inp);border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}
+.fkr-back{background:0;border:none;color:var(--link);cursor:pointer;font-size:12px;font-family:inherit;display:flex;align-items:center;gap:2px;padding:0;margin-right:4px}
+.fkr-back:hover{text-decoration:underline}
+.fkr-list{max-height:155px;overflow-y:auto}
+.fkr-item{display:flex;align-items:center;gap:8px;padding:9px 11px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);transition:background .12s}
+.fkr-item:last-child{border-bottom:none}
+.fkr-item:hover{background:var(--act)}
+.fkr-item .fil{flex:1;color:var(--text)}
+.fkr-item .fie{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:2px}
+.fkr-item .fis{background:0;border:1px solid var(--border);color:var(--text);padding:3px 9px;border-radius:4px;font-size:11px;font-family:inherit;cursor:pointer;white-space:nowrap}
+.fkr-item .fis:hover{background:var(--act)}
+.fkr-sel{padding:7px 11px;font-size:12px;background:var(--inp);color:var(--muted);border-top:1px solid var(--border)}
+.fkr-sel span{color:var(--link);font-weight:500}
+/* drop zone */
+.dz{border:2px dashed var(--border);border-radius:8px;padding:30px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:12px}
+.dz:hover,.dz.over{border-color:var(--link);background:var(--inp)}
+.dz svg{width:28px;height:28px;stroke:var(--muted);margin:0 auto 8px;display:block}
+.dz-t{font-size:13px;color:var(--muted)}
+.dz-s{font-size:11px;color:var(--dim);margin-top:3px}
+.ep-sec-row{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--inp);border:1px solid var(--border);border-radius:5px}
+.ep-sec-desc{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:4px 8px;font-size:12px;color:var(--muted);outline:none;font-family:inherit;margin-top:4px}
+.fi{display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--inp);border-radius:5px;margin-bottom:4px;font-size:12px}
+.fi-n{flex:1;color:var(--text)}
+.fi-x{background:0;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;line-height:1}
+.fi-x:hover{color:var(--danger)}
+</style>
+</head>
+<body>
+<!-- GLOBAL AURORA (home screen only) -->
+<div id="aurora-global">
+  <div class="ab ab1" style="width:640px;height:440px;top:-120px;left:-60px;animation:ab1 9s ease-in-out infinite alternate"></div>
+  <div class="ab ab2" style="width:540px;height:380px;top:-80px;right:-30px;animation:ab2 11s ease-in-out infinite alternate"></div>
+  <div class="ab ab3" style="width:700px;height:300px;bottom:10%;left:20%;animation:ab3 13s ease-in-out infinite alternate"></div>
+  <div class="ab ab4" style="width:380px;height:280px;top:25%;left:42%;animation:ab4 7s ease-in-out infinite alternate"></div>
+</div>
+<!-- SIDEBAR -->
+<aside class="sb" id="sb">
+  <div class="sb-logo" onclick="goHome()">
+    <span class="logo-brand">E&amp;C</span><span class="logo-docs">&nbsp;Docs</span>
+  </div>
+  <nav class="sb-nav">
+    <!-- Appointment Booking -->
+    <div class="ni" id="ni-appt">
+      <span class="chev" id="chev-appt" onclick="toggleApptDropdown(event)" style="cursor:pointer;padding:2px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="lbl" onclick="goAppt()" style="cursor:pointer">Appointment Booking</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Appointment Booking')">+</button><button class="ecb" onclick="ev();osd('Appointment Booking')">−</button></span>
+    </div>
+    <div class="nc" id="nc-appt">
+      <div class="nci" id="nci-fb" onclick="goFolder()"><span class="lbl">FB Outreach</span><span class="ec"><button class="ecb" onclick="ev();osa('FB Outreach')">+</button><button class="ecb" onclick="ev();osd('FB Outreach')">−</button></span></div>
+      <div class="nci" onclick="ev();toggleNCI('nc-outbound',this)">
+        <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+        <span class="lbl">Outbound</span>
+      </div>
+      <div class="nc2" id="nc-outbound">
+        <div class="nci2" onclick="ev();goSMDMS();toggleNCI2('nc-smdms',this)">
+          <span class="chev2"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>Social Media DMs
+        </div>
+        <div class="nc3" id="nc-smdms">
+          <div class="nci3" id="nci-fb-sm" onclick="goFolder()">FB</div>
+          <div class="nci3" onclick="goSubfolder('IG','Appointment Booking › Outbound › Social Media DMs')">IG</div>
+          <div class="nci3" onclick="goSubfolder('WA','Appointment Booking › Outbound › Social Media DMs')">WA</div>
+        </div>
+        <div class="nci2" onclick="goSubfolder('Cold Calling','Appointment Booking › Outbound')">Cold Calling</div>
+        <div class="nci2" onclick="goSubfolder('Loom','Appointment Booking › Outbound')">Loom</div>
+        <div class="nci2" onclick="goSubfolder('SMS','Appointment Booking › Outbound')">SMS</div>
+      </div>
+      <div class="nci" onclick="goSubfolder('IG Legion','Appointment Booking')"><span class="lbl">IG Legion</span><span class="ec"><button class="ecb" onclick="ev();osa('IG Legion')">+</button><button class="ecb" onclick="ev();osd('IG Legion')">−</button></span></div>
+    </div>
+    <!-- Shows -->
+    <div class="ni" onclick="toggleNI(this,'nc-shows')">
+      <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+      <span class="lbl">Shows</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Shows')">+</button><button class="ecb" onclick="ev();osd('Shows')">−</button></span>
+    </div>
+    <div class="nc" id="nc-shows">
+      <div class="nci" onclick="goSubfolder('Webinar Setup','Shows')"><span class="lbl">Webinar Setup</span><span class="ec"><button class="ecb" onclick="ev();osa('Webinar Setup')">+</button><button class="ecb" onclick="ev();osd('Webinar Setup')">−</button></span></div>
+    </div>
+    <!-- Sales -->
+    <div class="ni" onclick="toggleNI(this,'nc-sales')">
+      <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      <span class="lbl">Sales</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Sales')">+</button><button class="ecb" onclick="ev();osd('Sales')">−</button></span>
+    </div>
+    <div class="nc" id="nc-sales"></div>
+    <!-- Product -->
+    <div class="ni" onclick="toggleNI(this,'nc-product')">
+      <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <span class="lbl">Product</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Product')">+</button><button class="ecb" onclick="ev();osd('Product')">−</button></span>
+    </div>
+    <div class="nc" id="nc-product"></div>
+    <!-- Team -->
+    <div class="ni" onclick="toggleNI(this,'nc-team')">
+      <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <span class="lbl">Team</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Team')">+</button><button class="ecb" onclick="ev();osd('Team')">−</button></span>
+    </div>
+    <div class="nc" id="nc-team"></div>
+    <!-- Admin Data -->
+    <div class="ni" onclick="toggleNI(this,'nc-admin')">
+      <span class="chev"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      <span class="lbl">Admin Data</span>
+      <span class="ec"><button class="ecb" onclick="ev();osa('Admin Data')">+</button><button class="ecb" onclick="ev();osd('Admin Data')">−</button></span>
+    </div>
+    <div class="nc" id="nc-admin"></div>
+    <button class="add-cat" onclick="osa('root')">+ Add category</button>
+  </nav>
+  <div class="sb-foot">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:.4"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span class="sb-foot-lbl">Support</span>
+    <button class="iBtn" onclick="toggleGear()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </button>
+    <div class="gmenu" id="gmenu">
+      <div class="gmi" id="gmi-edit" onclick="toggleEdit()" style="display:flex;align-items:center;gap:8px">Edit sidebar <span style="margin-left:auto;font-size:11px;padding:1px 7px;border-radius:10px;background:var(--border);color:var(--muted)">OFF</span></div>
+    </div>
+  </div>
+</aside>
+<!-- MAIN -->
+<div class="main">
+  <header class="tb">
+    <div class="srch">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input placeholder="Search docs...">
+      <span class="kbd">⌘K</span>
+    </div>
+    <div class="tb-r" style="margin-left:auto">
+      <button class="iBtn" id="thm" onclick="toggleTheme()">
+        <svg id="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <button class="crBtn" onclick="openCreate()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New
+      </button>
+    </div>
+  </header>
+  <div class="ca">
+
+    <!-- HOME SCREEN -->
+    <div class="scr on" id="s-home">
+      <div class="hero">
+        <div class="aurora">
+          <div class="ab ab1"></div>
+          <div class="ab ab2"></div>
+          <div class="ab ab3"></div>
+          <div class="ab ab4"></div>
+        </div>
+        <div class="hero-content">
+          <h1>E&amp;C Docs Hub</h1>
+          <p>SOPs, processes, and guides — all in one place for Eminence &amp; Co.</p>
+          <div class="h-srch">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="Search docs...">
+          </div>
+        </div>
+      </div>
+      <div class="h-body">
+        <div class="s-hdg">Business Areas</div>
+        <div class="h-grid">
+          <div class="hcard" onclick="goAppt()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="hn">Appointment Booking</div><div class="hd">SOPs, channels, and outreach guides</div>
+          </div>
+          <div class="hcard" onclick="goFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <div class="hn">Shows</div><div class="hd">Webinar and live event processes</div>
+          </div>
+          <div class="hcard" onclick="goFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            <div class="hn">Sales</div><div class="hd">Pipeline, scripts, and close rates</div>
+          </div>
+          <div class="hcard" onclick="goFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <div class="hn">Product</div><div class="hd">Offers, delivery, and fulfilment docs</div>
+          </div>
+          <div class="hcard" onclick="goFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <div class="hn">Team</div><div class="hd">Hiring, onboarding, and HR processes</div>
+          </div>
+          <div class="hcard" onclick="goFolder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <div class="hn">Admin Data</div><div class="hd">Finance, legal, and sensitive records</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPOINTMENT BOOKING SCREEN -->
+    <div class="scr" id="s-appt">
+      <div class="fl">
+        <div class="fc">
+          <div class="bc"><a onclick="goHome()">E&amp;C Docs</a><span class="bs">&rsaquo;</span><span>Appointment Booking</span></div>
+          <div class="ph">
+            <h1 class="pt">Appointment Booking</h1>
+            <button class="ep-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit page</button>
+          </div>
+          <div class="psub">All appointment booking SOPs, outreach channels, and guides for Eminence &amp; Co.</div>
+          <div class="pdiv"></div>
+          <!-- FB Outreach -->
+          <div class="sb2" id="appt-fb">
+            <div class="st">FB Outreach</div>
+            <div class="sd">Facebook outreach channel — accounts, stimuli tracking, and performance SOPs.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goFolder()">
+                <div class="di"><div class="dn">FB Outreach</div><div class="dm">Account setup, stimuli &amp; tracking guides</div></div>
+                <button class="db" onclick="ev();goFolder()">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <!-- Outbound -->
+          <div class="sb2" id="appt-outbound">
+            <div class="st">Outbound</div>
+            <div class="sd">Cold and warm outreach — social DMs, cold calling, SMS, and Loom.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goSMDMS()">
+                <div class="di"><div class="dn">Social Media DMs</div><div class="dm">FB · IG · WA outreach</div></div>
+                <button class="db" onclick="ev();goSMDMS()">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+              <div class="dc" onclick="goSubfolder('Cold Calling','Appointment Booking › Outbound')">
+                <div class="di"><div class="dn">Cold Calling</div><div class="dm">Scripts and call processes</div></div>
+                <button class="db" onclick="ev();goSubfolder('Cold Calling','Appointment Booking › Outbound')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+              <div class="dc" onclick="goSubfolder('Loom','Appointment Booking › Outbound')">
+                <div class="di"><div class="dn">Loom</div><div class="dm">Video outreach SOPs</div></div>
+                <button class="db" onclick="ev();goSubfolder('Loom','Appointment Booking › Outbound')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+              <div class="dc" onclick="goSubfolder('SMS','Appointment Booking › Outbound')">
+                <div class="di"><div class="dn">SMS</div><div class="dm">Text campaign processes</div></div>
+                <button class="db" onclick="ev();goSubfolder('SMS','Appointment Booking › Outbound')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <!-- IG Legion -->
+          <div class="sb2" id="appt-ig">
+            <div class="st">IG Legion</div>
+            <div class="sd">Instagram Legion outreach — scripts, content strategy, and account management SOPs.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goSubfolder('IG Legion','Appointment Booking')">
+                <div class="di"><div class="dn">IG Legion</div><div class="dm">Scripts, strategy &amp; account management</div></div>
+                <button class="db" onclick="ev();goSubfolder('IG Legion','Appointment Booking')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ftoc">
+          <div class="ftoc-inner">
+            <div class="tocT">On This Page</div>
+            <a class="tocL act" onclick="toSec('appt-fb',this)">FB Outreach</a>
+            <a class="tocL" onclick="toSec('appt-outbound',this)">Outbound</a>
+            <a class="tocL" onclick="toSec('appt-ig',this)">IG Legion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOLDER SCREEN -->
+    <div class="scr" id="s-folder">
+      <div class="fl">
+        <div class="fc">
+          <div class="bc">
+            <a onclick="goHome()">E&amp;C Docs</a><span class="bs">&rsaquo;</span>
+            <a onclick="goFolder()">Appointment Booking</a><span class="bs">&rsaquo;</span>
+            <span>FB Outreach</span>
+          </div>
+          <div class="ph">
+            <h1 class="pt" id="folderTitle">FB Outreach</h1>
+            <button class="ep-btn" onclick="openEditPage()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit page
+            </button>
+          </div>
+          <div class="psub" id="folderDesc">Facebook outreach channel — SOPs, variables, and tracking guides for the FB appointment booking channel.</div>
+          <div class="pdiv"></div>
+
+          <!-- Section 1 -->
+          <div class="sb2" id="sec-acct">
+            <div class="st">Account Setup</div>
+            <div class="sd">Account creation, configuration, and quick reports.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">Account Setup SOP</div><div class="dm">Updated 2 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">Quick Reports Guide</div><div class="dm">Updated 5 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc" onclick="goFolder()">
+                <div class="di"><div class="dn">Onboarding Scripts</div><div class="dm">3 documents inside</div></div>
+                <button class="db" onclick="ev();goFolder()">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="sb2" id="sec-stim">
+            <div class="st">Stimuli Tracking &amp; Testing</div>
+            <div class="sd">Ad creatives, variable tracking, and hypothesis testing.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">FB Stimuli Tracking SOP</div><div class="dm">Updated 1 day ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">Global Variables — FB</div><div class="dm">Updated 3 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc">
+                <div class="di"><div class="dn">FB Tracking Sheet</div><div class="dm">Google Sheets — opens externally</div></div>
+                <button class="db" onclick="window.open('https://sheets.google.com','_blank')">View link <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="sb2" id="sec-fbac">
+            <div class="st">Facebook Accounts</div>
+            <div class="sd">Account management SOPs and learnings.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">FB Account Management SOP</div><div class="dm">Updated 1 week ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">Learnings &amp; Hypotheses — FB</div><div class="dm">Updated 4 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Folder TOC -->
+        <div class="ftoc">
+          <div class="ftoc-inner">
+            <div class="tocT">On This Page</div>
+            <a class="tocL act" onclick="toSec('sec-acct',this)">Account Setup</a>
+            <a class="tocL" onclick="toSec('sec-stim',this)">Stimuli Tracking &amp; Testing</a>
+            <a class="tocL" onclick="toSec('sec-fbac',this)">Facebook Accounts</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL MEDIA DMs SCREEN -->
+    <div class="scr" id="s-smdms">
+      <div class="fl">
+        <div class="fc">
+          <div class="bc"><a onclick="goHome()">E&amp;C Docs</a><span class="bs">&rsaquo;</span><a onclick="goAppt()">Appointment Booking</a><span class="bs">&rsaquo;</span><span>Social Media DMs</span></div>
+          <div class="ph">
+            <h1 class="pt">Social Media DMs</h1>
+            <button class="ep-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit page</button>
+          </div>
+          <div class="psub">Social media direct message outreach — Facebook, Instagram, and WhatsApp campaigns.</div>
+          <div class="pdiv"></div>
+          <!-- Facebook -->
+          <div class="sb2" id="smdms-fb">
+            <div class="st">Facebook (FB)</div>
+            <div class="sd">Facebook DM outreach — account SOPs, scripts, and performance tracking.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goFolder()">
+                <div class="di"><div class="dn">FB Outreach</div><div class="dm">Account setup, stimuli &amp; tracking</div></div>
+                <button class="db" onclick="ev();goFolder()">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <!-- Instagram -->
+          <div class="sb2" id="smdms-ig">
+            <div class="st">Instagram (IG)</div>
+            <div class="sd">Instagram DM outreach — SOPs, scripts, and tracking.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goSubfolder('IG','Appointment Booking › Outbound › Social Media DMs')">
+                <div class="di"><div class="dn">IG Outreach</div><div class="dm">Scripts, SOPs &amp; tracking</div></div>
+                <button class="db" onclick="ev();goSubfolder('IG','Appointment Booking › Outbound › Social Media DMs')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <!-- WhatsApp -->
+          <div class="sb2" id="smdms-wa">
+            <div class="st">WhatsApp (WA)</div>
+            <div class="sd">WhatsApp messaging outreach — sequences, scripts, and conversion tracking.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goSubfolder('WA','Appointment Booking › Outbound › Social Media DMs')">
+                <div class="di"><div class="dn">WA Outreach</div><div class="dm">Scripts, sequences &amp; tracking</div></div>
+                <button class="db" onclick="ev();goSubfolder('WA','Appointment Booking › Outbound › Social Media DMs')">Open folder <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <!-- Overall -->
+          <div class="sb2" id="smdms-overall">
+            <div class="st">Overall</div>
+            <div class="sd">Cross-platform DM strategy, SOPs, and tracking sheets.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn">Social Media DMs — SOPs (Overall)</div><div class="dm">Updated 5 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc">
+                <div class="di"><div class="dn">DM Tracking Sheet</div><div class="dm">Google Sheets — opens externally</div></div>
+                <button class="db">View link <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ftoc"><div class="ftoc-inner">
+          <div class="tocT">On This Page</div>
+          <a class="tocL act" onclick="toSec('smdms-fb',this)">Facebook (FB)</a>
+          <a class="tocL" onclick="toSec('smdms-ig',this)">Instagram (IG)</a>
+          <a class="tocL" onclick="toSec('smdms-wa',this)">WhatsApp (WA)</a>
+          <a class="tocL" onclick="toSec('smdms-overall',this)">Overall</a>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- GENERIC SUBFOLDER SCREEN -->
+    <div class="scr" id="s-gen">
+      <div class="fl">
+        <div class="fc">
+          <div class="bc" id="gen-bc"></div>
+          <div class="ph">
+            <h1 class="pt" id="gen-title">Subfolder</h1>
+            <button class="ep-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit page</button>
+          </div>
+          <div class="psub" id="gen-desc">—</div>
+          <div class="pdiv"></div>
+          <div class="sb2" id="gen-sec1">
+            <div class="st">SOPs &amp; Guides</div>
+            <div class="sd">Standard operating procedures and step-by-step guides.</div>
+            <div class="dcg">
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn" id="gen-doc1">Main SOP</div><div class="dm">Updated recently</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+              <div class="dc" onclick="goDoc()">
+                <div class="di"><div class="dn" id="gen-doc2">Scripts &amp; Templates</div><div class="dm">Updated 3 days ago</div></div>
+                <button class="db" onclick="ev();goDoc()">View guide <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="sb2" id="gen-sec2">
+            <div class="st">Tracking &amp; Data</div>
+            <div class="sd">Performance tracking sheets and variable reference documents.</div>
+            <div class="dcg">
+              <div class="dc">
+                <div class="di"><div class="dn" id="gen-sheet">Tracking Sheet</div><div class="dm">Google Sheets — opens externally</div></div>
+                <button class="db">View link <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ftoc"><div class="ftoc-inner">
+          <div class="tocT">On This Page</div>
+          <a class="tocL act" onclick="toSec('gen-sec1',this)">SOPs &amp; Guides</a>
+          <a class="tocL" onclick="toSec('gen-sec2',this)">Tracking &amp; Data</a>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- DOC SCREEN -->
+    <div class="scr" id="s-doc">
+      <div class="save-banner" id="save-banner">
+        <div class="save-banner-msg">Unsaved changes <span>— editing in progress</span></div>
+        <button class="mbtn mbtn-s" style="font-size:12px;padding:5px 12px" onclick="discardDocEdit()">Don't save</button>
+        <button class="mbtn mbtn-p" style="font-size:12px;padding:5px 12px" onclick="document.getElementById('ov-save-confirm').classList.add('show')">Save</button>
+      </div>
+      <div class="dl">
+        <div class="dcon">
+          <div class="bc">
+            <a onclick="goHome()">E&amp;C Docs</a><span class="bs">&rsaquo;</span>
+            <a onclick="goFolder()">Appointment Booking</a><span class="bs">&rsaquo;</span>
+            <a onclick="goFolder()">FB Outreach</a><span class="bs">&rsaquo;</span>
+            <span>Account Setup SOP</span>
+          </div>
+          <h1 class="pt" style="margin-bottom:12px">Account Setup SOP</h1>
+          <div class="dmr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            SOP-SYS-FB-002<span class="dms">·</span>Owner: Ben<span class="dms">·</span>v3
+            <button class="dhb" onclick="document.getElementById('ov-vh').classList.add('show')">Version History</button>
+            <button class="dhb" style="margin-left:6px;display:flex;align-items:center;gap:5px" onclick="openDocEdit()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit doc</button>
+          </div>
+          <div class="dbody">
+            <h2 id="d1">1. Purpose &amp; Scope</h2>
+            <p>This SOP covers the full process for setting up new Facebook outreach accounts for appointment booking campaigns. It applies to all team members responsible for account creation and initial configuration.</p>
+            <h2 id="d2">2. Roles &amp; Responsibilities</h2>
+            <ul><li><strong>Account Manager</strong> — Creates and configures the FB account</li><li><strong>Team Lead</strong> — Reviews and approves account setup</li><li><strong>Admin</strong> — Provides access credentials and permissions</li></ul>
+            <h2 id="d3">3. Tools Required</h2>
+            <ul><li>Facebook Business Manager — <a href="#">business.facebook.com</a></li><li>Tracking spreadsheet — <a href="#">Google Sheets link</a></li><li>Internal CRM dashboard</li></ul>
+            <h2 id="d4">4. Procedure</h2>
+            <h3>Step 1: Create Business Manager Account</h3>
+            <p>Navigate to Business Manager and click "Create Account". Fill in the business name exactly as "Eminence &amp; Co" and use the primary admin email.</p>
+            <h3>Step 2: Configure Ad Account</h3>
+            <p>Under Business Settings &gt; Ad Accounts, click "Add" &gt; "Create a new ad account". Set timezone to GMT and currency to GBP.</p>
+            <h3>Step 3: Assign Permissions</h3>
+            <ul><li>Add team members with <strong>Advertiser</strong> access</li><li>Add Team Lead with <strong>Admin</strong> access</li><li>Verify all pixel permissions are granted</li></ul>
+            <h2 id="d5">5. Key Definitions</h2>
+            <ul><li><strong>BM</strong> — Business Manager</li><li><strong>Pixel</strong> — Facebook tracking code on landing pages</li><li><strong>CAPI</strong> — Conversions API for server-side tracking</li></ul>
+          </div>
+        </div>
+        <div class="dtoc">
+          <div class="dtoc-inner">
+            <div class="tocT">On This Page</div>
+            <a class="tocL act" onclick="toDoc('d1',this)">1. Purpose &amp; Scope</a>
+            <a class="tocL" onclick="toDoc('d2',this)">2. Roles &amp; Responsibilities</a>
+            <a class="tocL" onclick="toDoc('d3',this)">3. Tools Required</a>
+            <a class="tocL" onclick="toDoc('d4',this)">4. Procedure</a>
+            <a class="tocL" onclick="toDoc('d5',this)">5. Key Definitions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- MODALS -->
+<!-- NEW -->
+<div class="ov" id="ov-create">
+  <div class="mod">
+    <div class="mod-t">New</div>
+    <label class="lbl">Name</label>
+    <input class="inp" id="cr-name" type="text" placeholder="e.g. New Account SOP">
+    <label class="lbl">Description <span style="font-weight:400;color:var(--dim)">(optional)</span></label>
+    <input class="inp" id="cr-desc" type="text" placeholder="Short description...">
+    <label class="lbl">Type</label>
+    <div class="type-pills">
+      <button class="type-pill on" data-type="doc" onclick="setPillType('doc')">Document</button>
+      <button class="type-pill" data-type="folder" onclick="setPillType('folder')">Folder</button>
+      <button class="type-pill" data-type="sheet" onclick="setPillType('sheet')">Google Sheet</button>
+    </div>
+    <div id="sheet-url-wrap">
+      <label class="lbl">Sheet URL</label>
+      <input class="inp" id="sheet-url" type="url" placeholder="https://docs.google.com/spreadsheets/...">
+    </div>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-create')">Cancel</button>
+      <button class="mbtn mbtn-p" onclick="doCreate()">Create</button>
+    </div>
+  </div>
+</div>
+<!-- IMPORT -->
+<div class="ov" id="ov-import">
+  <div class="mod">
+    <div class="mod-t">Import Documents</div>
+    <div class="dz" id="dz" onclick="document.getElementById('fi').click()" ondragover="dzOver(event)" ondrop="dzDrop(event)" ondragleave="dzLeave()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <div class="dz-t">Drop .docx or .pdf files here</div>
+      <div class="dz-s">or click to browse</div>
+    </div>
+    <input type="file" id="fi" multiple accept=".docx,.pdf" style="display:none" onchange="fiChange(event)">
+    <div id="fi-list"></div>
+    <label class="lbl">Import to</label>
+    <div class="fkr" id="fkr-import">
+      <div class="fkr-bc" id="fbc-import"></div>
+      <div class="fkr-list" id="flist-import"></div>
+      <div class="fkr-sel" id="fsel-import" style="display:none">Selected: <span id="fsel-txt-import"></span></div>
+    </div>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-import')">Cancel</button>
+      <button class="mbtn mbtn-p" onclick="doImport()">Import All</button>
+    </div>
+  </div>
+</div>
+<!-- ADD SIDEBAR ITEM -->
+<div class="ov" id="ov-add">
+  <div class="mod" style="min-width:320px;max-width:380px">
+    <div class="mod-t">Add to <span id="add-target">—</span></div>
+    <label class="lbl">Name</label>
+    <input class="inp" id="add-name" type="text" placeholder="e.g. New category">
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-add')">Cancel</button>
+      <button class="mbtn mbtn-p" onclick="doAdd()">Add</button>
+    </div>
+  </div>
+</div>
+<!-- DELETE -->
+<div class="ov" id="ov-del">
+  <div class="mod" style="min-width:320px;max-width:380px">
+    <div class="mod-t">Delete "<span id="del-name">Item</span>"?</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">This cannot be undone. All contents inside will also be permanently removed.</p>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-del')">Cancel</button>
+      <button class="mbtn mbtn-d" onclick="doDel()">Confirm</button>
+    </div>
+  </div>
+</div>
+<!-- EDIT PAGE -->
+<div class="ov" id="ov-ep">
+  <div class="mod" style="min-width:400px;max-width:500px">
+    <div class="mod-t">Edit Page</div>
+    <label class="lbl">Page title</label>
+    <input class="inp" id="ep-title" type="text" value="FB Outreach">
+    <label class="lbl">Description</label>
+    <input class="inp" id="ep-desc" type="text" value="Facebook outreach channel — SOPs, variables, and tracking guides for the FB appointment booking channel.">
+    <label class="lbl" style="margin-bottom:8px">Sections <span style="font-weight:400;color:var(--dim)">(sub-categories on this page)</span></label>
+    <div id="ep-sections" style="margin-bottom:10px;display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto"></div>
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <input class="inp" id="ep-new-sec" type="text" placeholder="New section name..." style="margin-bottom:0;flex:1">
+      <button class="mbtn mbtn-s" onclick="addSec()" style="padding:7px 12px;white-space:nowrap">+ Add</button>
+    </div>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-ep')">Cancel</button>
+      <button class="mbtn mbtn-p" onclick="doEP()">Save</button>
+    </div>
+  </div>
+</div>
+<!-- VERSION HISTORY -->
+<div class="ov" id="ov-vh">
+  <div class="mod" style="min-width:420px;max-width:520px">
+    <div class="mod-t">Version History</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--inp);border:1px solid var(--border);border-radius:7px">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">v3 <span style="font-size:11px;font-weight:400;color:#22c55e;background:rgba(34,197,94,.12);padding:2px 8px;border-radius:10px;margin-left:4px">Current</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Updated 2 days ago &nbsp;·&nbsp; by Ben</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--inp);border:1px solid var(--border);border-radius:7px">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">v2</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Updated 1 week ago &nbsp;·&nbsp; by Ben</div>
+        </div>
+        <button class="mbtn mbtn-s" style="font-size:12px;padding:5px 12px" onclick="alert('Restored v2 (demo)')">Restore</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--inp);border:1px solid var(--border);border-radius:7px">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">v1</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Updated 3 weeks ago &nbsp;·&nbsp; by Ben</div>
+        </div>
+        <button class="mbtn mbtn-s" style="font-size:12px;padding:5px 12px" onclick="alert('Restored v1 (demo)')">Restore</button>
+      </div>
+    </div>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-vh')">Close</button>
+    </div>
+  </div>
+</div>
+<!-- SAVE CONFIRM -->
+<div class="ov" id="ov-save-confirm">
+  <div class="mod" style="min-width:320px;max-width:380px">
+    <div class="mod-t">Confirm save?</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6">This will save your changes and create a new version of the document.</p>
+    <div class="ma">
+      <button class="mbtn mbtn-s" onclick="closeOv('ov-save-confirm')">Cancel</button>
+      <button class="mbtn mbtn-p" onclick="confirmDocSave()">Confirm &amp; Save</button>
+    </div>
+  </div>
+</div>
+<script>
+// FOLDER TREE
+const T={
+  'Appointment Booking':{'FB Outreach':{'Account Setup':{},'Stimuli Tracking':{},'Facebook Accounts':{}},'IG Legion':{}},
+  'Shows':{'Webinar Setup':{}},
+  'Sales':{},'Product':{},'Team':{},'Admin Data':{}
+};
+// PICKER STATE
+let pPath={create:[],import:[]};
+let pSel={create:null,import:null};
+
+function getNode(path){
+  let n=T;
+  for(const p of path) n=n[p]||{};
+  return n;
+}
+function renderPicker(id){
+  const path=pPath[id];
+  const node=getNode(path);
+  const keys=Object.keys(node);
+  const bc=document.getElementById('fbc-'+id);
+  const list=document.getElementById('flist-'+id);
+  const sel=document.getElementById('fsel-'+id);
+  const selTxt=document.getElementById('fsel-txt-'+id);
+  // breadcrumb
+  bc.innerHTML='';
+  if(path.length>0){
+    const b=document.createElement('button');
+    b.className='fkr-back';
+    b.innerHTML='&#8592; Back';
+    b.onclick=()=>{pPath[id].pop();renderPicker(id)};
+    bc.appendChild(b);
+    const s=document.createElement('span');
+    s.textContent=path.join(' › ');
+    bc.appendChild(s);
+  } else {
+    bc.innerHTML='<span style="font-size:12px;color:var(--muted)">Select a location</span>';
+  }
+  // list
+  list.innerHTML='';
+  if(!keys.length){
+    const e=document.createElement('div');
+    e.style.cssText='padding:10px 11px;font-size:12px;color:var(--muted);text-align:center';
+    e.textContent=path.length?'No sub-folders':'No folders';
+    list.appendChild(e);
+  }
+  keys.forEach(k=>{
+    const hasCh=Object.keys(node[k]).length>0;
+    const row=document.createElement('div');
+    row.className='fkr-item';
+    row.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:.5;flex-shrink:0"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg><span class="fil">${k}</span><button class="fis" onclick="event.stopPropagation();selLoc('${id}','${k}')">Move</button>`;
+    if(hasCh) row.addEventListener('click',()=>{pPath[id].push(k);renderPicker(id)});
+    list.appendChild(row);
+  });
+  // selected
+  if(pSel[id]){sel.style.display='';selTxt.textContent=pSel[id]}
+  else sel.style.display='none';
+}
+function selLoc(id,k){
+  const full=[...pPath[id],k].join(' › ');
+  pSel[id]=full;
+  renderPicker(id);
+}
+// THEME
+function toggleTheme(){
+  const html=document.documentElement;
+  const light=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',light);
+  localStorage.setItem('theme',light);
+  updTheme();
+}
+function updTheme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.getElementById('sun').style.display=dark?'':'none';
+  document.getElementById('moon').style.display=dark?'none':'';
+}
+(()=>{
+  const s=localStorage.getItem('theme');
+  if(s) document.documentElement.setAttribute('data-theme',s);
+  updTheme();
+  // Start on home screen — show aurora
+  document.body.classList.add('home-active');
+  document.getElementById('aurora-global').classList.add('show');
+})();
+// SCREENS
+function showScr(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function auroraOff(){document.body.classList.remove('home-active');document.getElementById('aurora-global').classList.remove('show')}
+function apptNav(){
+  document.querySelectorAll('.ni,.nci,.nci2,.nci3').forEach(e=>e.classList.remove('act'));
+  document.getElementById('ni-appt').classList.add('act');
+  document.getElementById('nc-appt').classList.add('open');
+  document.getElementById('chev-appt').classList.add('open');
+}
+function goHome(){
+  showScr('s-home');
+  document.querySelectorAll('.ni,.nci').forEach(e=>e.classList.remove('act'));
+  document.body.classList.add('home-active');
+  document.getElementById('aurora-global').classList.add('show');
+}
+function goAppt(){
+  showScr('s-appt');auroraOff();apptNav();
+}
+function goFolder(){
+  showScr('s-folder');auroraOff();apptNav();
+  document.getElementById('nci-fb').classList.add('act');
+}
+function goDoc(){
+  showScr('s-doc');auroraOff();apptNav();
+  document.getElementById('nci-fb').classList.add('act');
+}
+function goSMDMS(){
+  showScr('s-smdms');auroraOff();apptNav();
+}
+const subDesc={
+  'IG':'Instagram DM outreach SOPs, scripts, and performance tracking.',
+  'WA':'WhatsApp messaging outreach — sequences, scripts, and conversion tracking.',
+  'Cold Calling':'Cold calling scripts, objection handling, and call performance guides.',
+  'Loom':'Loom video outreach SOPs, sequence templates, and follow-up guides.',
+  'SMS':'SMS campaign processes, message templates, and A/B testing guides.',
+  'IG Legion':'Instagram Legion outreach — scripts, content strategy, and account management.',
+  'Webinar Setup':'Webinar technical setup, run-of-show, and post-event follow-up guides.',
+  'Onboarding Scripts':'Onboarding call scripts, objection handling, and client handoff SOPs.',
+};
+function goSubfolder(name,breadcrumb){
+  document.getElementById('gen-title').textContent=name;
+  document.getElementById('gen-desc').textContent=subDesc[name]||name+' — SOPs, guides, and tracking documents.';
+  document.getElementById('gen-doc1').textContent=name+' — Main SOP';
+  document.getElementById('gen-doc2').textContent=name+' Scripts & Templates';
+  document.getElementById('gen-sheet').textContent=name+' Tracking Sheet';
+  const parts=breadcrumb.split(' › ');
+  let html='<a onclick="goHome()">E&amp;C Docs</a>';
+  parts.forEach(p=>{html+=`<span class="bs">&rsaquo;</span><span>${p}</span>`});
+  html+=`<span class="bs">&rsaquo;</span><span>${name}</span>`;
+  document.getElementById('gen-bc').innerHTML=html;
+  showScr('s-gen');auroraOff();apptNav();
+}
+// APPOINTMENT BOOKING DROPDOWN (chevron only)
+function toggleApptDropdown(e){
+  e.stopPropagation();
+  const nc=document.getElementById('nc-appt');
+  const ch=document.getElementById('chev-appt');
+  if(nc){nc.classList.toggle('open');if(ch)ch.classList.toggle('open')}
+  document.getElementById('ni-appt').classList.toggle('act',nc.classList.contains('open'));
+}
+// SIDEBAR TOGGLE
+function toggleNI(el,ncId){
+  const nc=document.getElementById(ncId);
+  const ch=el.querySelector('.chev');
+  if(nc){nc.classList.toggle('open');if(ch)ch.classList.toggle('open')}
+  document.querySelectorAll('.ni').forEach(e=>e.classList.remove('act'));
+  el.classList.add('act');
+}
+function toggleNCI(ncId,el){
+  event.stopPropagation();
+  const nc=document.getElementById(ncId);
+  const ch=el.querySelector('.chev');
+  if(nc){nc.classList.toggle('open');if(ch)ch.classList.toggle('open')}
+}
+function toggleNCI2(ncId,el){
+  event.stopPropagation();
+  const nc=document.getElementById(ncId);
+  const ch=el.querySelector('.chev2');
+  if(nc){nc.classList.toggle('open');if(ch)ch.classList.toggle('open')}
+}
+// GEAR
+function toggleGear(){document.getElementById('gmenu').classList.toggle('show')}
+document.addEventListener('click',e=>{if(!e.target.closest('.sb-foot'))document.getElementById('gmenu').classList.remove('show')});
+// EDIT MODE
+let editOn=false;
+function toggleEdit(){
+  editOn=!editOn;
+  document.getElementById('sb').classList.toggle('edit-mode',editOn);
+  document.getElementById('gmi-edit').innerHTML=`Edit sidebar <span style="margin-left:auto;font-size:11px;padding:1px 7px;border-radius:10px;background:${editOn?'#22c55e':'var(--border)'};color:${editOn?'#fff':'var(--muted)'}">${editOn?'ON':'OFF'}</span>`;
+  document.getElementById('gmenu').classList.remove('show');
+}
+// OVERLAYS
+function closeOv(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show')}));
+function ev(){event.stopPropagation()}
+// CREATE / NEW
+let crType='doc';
+function openCreate(){
+  document.getElementById('cr-name').value='';
+  document.getElementById('cr-desc').value='';
+  setPillType('doc');
+  document.getElementById('ov-create').classList.add('show');
+}
+function setPillType(t){
+  crType=t;
+  document.querySelectorAll('.type-pill').forEach(p=>p.classList.toggle('on',p.dataset.type===t));
+  const wrap=document.getElementById('sheet-url-wrap');
+  if(t==='sheet'){wrap.classList.add('open')}else{wrap.classList.remove('open')}
+}
+function crTypeChange(){}
+function doCreate(){
+  const n=document.getElementById('cr-name').value||'Untitled';
+  alert(`Created "${n}"\n(Demo — not saved)`);
+  closeOv('ov-create');
+}
+// IMPORT
+let iFiles=[];
+function openImport(){
+  iFiles=[];
+  pPath.import=[];pSel.import=null;
+  document.getElementById('fi-list').innerHTML='';
+  renderPicker('import');
+  document.getElementById('ov-import').classList.add('show');
+}
+function dzOver(e){e.preventDefault();document.getElementById('dz').classList.add('over')}
+function dzLeave(){document.getElementById('dz').classList.remove('over')}
+function dzDrop(e){e.preventDefault();dzLeave();addFiles(Array.from(e.dataTransfer.files))}
+function fiChange(e){addFiles(Array.from(e.target.files))}
+function addFiles(files){
+  files.forEach(f=>{if(!iFiles.find(x=>x.name===f.name))iFiles.push(f)});
+  renderFiles();
+}
+function renderFiles(){
+  document.getElementById('fi-list').innerHTML=iFiles.map((f,i)=>`<div class="fi"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.5;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="fi-n">${f.name}</span><button class="fi-x" onclick="rmFile(${i})">&#215;</button></div>`).join('');
+}
+function rmFile(i){iFiles.splice(i,1);renderFiles()}
+function doImport(){
+  if(!iFiles.length){alert('Add at least one file.');return}
+  alert(`Imported ${iFiles.length} file(s) to "${pSel.import||'root'}"\n(Demo — not saved)`);
+  closeOv('ov-import');
+}
+// SIDEBAR ADD/DEL
+function osa(t){document.getElementById('add-target').textContent=t;document.getElementById('add-name').value='';document.getElementById('ov-add').classList.add('show')}
+function osd(t){document.getElementById('del-name').textContent=t;document.getElementById('ov-del').classList.add('show')}
+function doAdd(){alert('Added "'+document.getElementById('add-name').value+'" (demo)');closeOv('ov-add')}
+function doDel(){alert('Deleted (demo)');closeOv('ov-del')}
+// EDIT PAGE
+const secMap={'Account Setup':'sec-acct','Stimuli Tracking & Testing':'sec-stim','Facebook Accounts':'sec-fbac'};
+function makeSecRow(name,desc){
+  const row=document.createElement('div');
+  row.className='ep-sec-row';
+  row.dataset.sec=name;
+  row.innerHTML=`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">${name}</div><input class="ep-sec-desc" type="text" value="${desc.replace(/"/g,'&quot;')}" placeholder="Section description..."></div><button class="ecb" onclick="rmSec(this)" style="width:22px;height:22px;flex-shrink:0;margin-top:1px">−</button>`;
+  return row;
+}
+function openEditPage(){
+  const sections=document.getElementById('ep-sections');
+  sections.innerHTML='';
+  Object.entries(secMap).forEach(([name,id])=>{
+    const el=document.getElementById(id);
+    if(el&&el.style.display!=='none'){
+      const desc=(el.querySelector('.sd')||{}).textContent||'';
+      sections.appendChild(makeSecRow(name,desc));
+    }
+  });
+  document.getElementById('ov-ep').classList.add('show');
+}
+function doEP(){
+  document.getElementById('folderTitle').textContent=document.getElementById('ep-title').value;
+  document.getElementById('folderDesc').textContent=document.getElementById('ep-desc').value;
+  const rows=Array.from(document.querySelectorAll('#ep-sections .ep-sec-row'));
+  const kept=rows.map(r=>r.dataset.sec);
+  const descs={};
+  rows.forEach(r=>{const i=r.querySelector('.ep-sec-desc');descs[r.dataset.sec]=i?i.value:''});
+  // show/hide existing + update descriptions
+  Object.entries(secMap).forEach(([name,id])=>{
+    const el=document.getElementById(id);
+    if(el){
+      const show=kept.includes(name);
+      el.style.display=show?'':'none';
+      if(show){const sd=el.querySelector('.sd');if(sd&&descs[name]!==undefined)sd.textContent=descs[name];}
+    }
+  });
+  // create NEW sections
+  kept.forEach(name=>{
+    if(!secMap[name]){
+      const id='sec-'+Math.random().toString(36).slice(2,9);
+      secMap[name]=id;
+      const el=document.createElement('div');
+      el.className='sb2';el.id=id;
+      el.innerHTML=`<div class="st">${name}</div><div class="sd">${descs[name]||''}</div><div class="dcg"><div style="padding:14px 0;font-size:13px;color:var(--dim)">No documents yet — add via Create.</div></div>`;
+      document.querySelector('#s-folder .fc').appendChild(el);
+    }
+  });
+  // rebuild TOC
+  const toc=document.querySelector('#s-folder .ftoc-inner');
+  toc.innerHTML='<div class="tocT">On This Page</div>'+kept.filter(n=>secMap[n]&&document.getElementById(secMap[n])?.style.display!=='none').map((n,i)=>`<a class="tocL${i===0?' act':''}" onclick="toSec('${secMap[n]}',this)">${n}</a>`).join('');
+  closeOv('ov-ep');
+}
+function addSec(){
+  const inp=document.getElementById('ep-new-sec');
+  const name=inp.value.trim();
+  if(!name)return;
+  document.getElementById('ep-sections').appendChild(makeSecRow(name,''));
+  inp.value='';
+}
+function rmSec(btn){btn.closest('.ep-sec-row').remove()}
+// TOC
+function toSec(id,el){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('#s-folder .tocL').forEach(l=>l.classList.remove('act'));
+  el.classList.add('act');
+}
+function toDoc(id,el){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('#s-doc .tocL').forEach(l=>l.classList.remove('act'));
+  el.classList.add('act');
+}
+// DOC EDIT
+function openDocEdit(){
+  document.getElementById('save-banner').classList.add('show');
+  // In a real app this would make the doc body editable
+  document.querySelector('#s-doc .dbody').setAttribute('contenteditable','true');
+  document.querySelector('#s-doc .dbody').style.outline='none';
+}
+function discardDocEdit(){
+  document.getElementById('save-banner').classList.remove('show');
+  document.querySelector('#s-doc .dbody').removeAttribute('contenteditable');
+}
+function confirmDocSave(){
+  closeOv('ov-save-confirm');
+  document.getElementById('save-banner').classList.remove('show');
+  document.querySelector('#s-doc .dbody').removeAttribute('contenteditable');
+  // Show brief saved toast
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:2000;pointer-events:none;opacity:1;transition:opacity .4s';
+  t.textContent='Saved ✓';
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),400)},1800);
+}
+// DOC SCROLL SPY
+(function(){
+  const docIds=['d1','d2','d3','d4','d5'];
+  function updateDocTOC(){
+    const dl=document.querySelector('#s-doc .dl');
+    if(!dl)return;
+    const scrollTop=dl.scrollTop;
+    let active=docIds[0];
+    docIds.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el&&el.offsetTop-dl.offsetTop-80<=scrollTop) active=id;
+    });
+    document.querySelectorAll('#s-doc .tocL').forEach(l=>{
+      l.classList.toggle('act',l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+active+"'"));
+    });
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    const dl=document.querySelector('#s-doc .dl');
+    if(dl) dl.addEventListener('scroll',updateDocTOC,{passive:true});
+  });
+})();
+</script>
+</body>
+</html>
