@@ -75,9 +75,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .crBtn{background:var(--text);color:var(--bg);border:none;padding:7px 15px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .12s}
 .crBtn:hover{opacity:.85}
 /* SCREENS */
-.ca{flex:1;overflow-y:auto;display:flex;flex-direction:column}
-.scr{display:none;flex-direction:column;flex:1}
+.ca{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.scr{display:none;flex-direction:column;flex:1;overflow:hidden}
 .scr.on{display:flex}
+#s-home{overflow-y:auto}
 /* HOME */
 .hero{padding:48px 40px;text-align:center;border-bottom:1px solid var(--border)}
 [data-theme=dark] .hero{background:linear-gradient(180deg,#1a1a1a 0%,#000 100%)}
@@ -89,17 +90,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .h-srch input{background:0;border:none;outline:none;color:var(--text);font-size:14px;font-family:inherit;padding:12px 0;width:100%}
 .h-srch input::placeholder{color:var(--muted)}
 .h-body{padding:32px 40px}
-.s-hdg{font-size:16px;font-weight:600;text-align:center;margin-bottom:18px}
+.s-hdg{font-size:20px;font-weight:600;text-align:center;margin-bottom:20px;color:var(--text);letter-spacing:-.2px}
 .h-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:780px;margin:0 auto}
 .hcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 20px;cursor:pointer;transition:border-color .15s;display:flex;flex-direction:column;gap:5px}
 .hcard:hover{border-color:var(--border-h)}
 .hcard svg{width:18px;height:18px;stroke:var(--muted);flex-shrink:0;margin-bottom:2px}
 .hcard .hn{font-size:14px;font-weight:600}
-.hcard .hd{font-size:12px;color:var(--link)}
+.hcard .hd{font-size:12px;color:var(--muted)}
 /* FOLDER PAGE */
-.fl{display:flex;flex:1;overflow:hidden}
+.fl{display:flex;flex:1;min-height:0}
 .fc{flex:1;overflow-y:auto;padding:28px 40px;max-width:860px}
-.ftoc{width:200px;min-width:200px;padding:26px 14px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+.ftoc{width:200px;min-width:200px;padding:26px 14px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0;height:100%}
 .bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-bottom:14px}
 .bc a{color:var(--muted);text-decoration:none;cursor:pointer}
 .bc a:hover{color:var(--text)}
@@ -127,9 +128,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .tocL:hover,.tocL.act{color:var(--text);border-left-color:var(--text)}
 .tocL.act{font-weight:600}
 /* DOC */
-.dl{display:flex;flex:1;overflow:hidden}
+.dl{display:flex;flex:1;min-height:0}
 .dcon{flex:1;overflow-y:auto;padding:28px 40px;max-width:740px}
-.dtoc{width:200px;min-width:200px;padding:26px 14px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+.dtoc{width:200px;min-width:200px;padding:26px 14px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0;height:100%}
 .dmr{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .dms{opacity:.3}
 .dhb{margin-left:auto;background:0;border:1px solid var(--border);color:var(--muted);padding:4px 11px;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;transition:background .12s}
@@ -268,7 +269,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
     <div class="sp"></div>
     <div class="srch">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input placeholder="Search docs..." readonly>
+      <input placeholder="Search docs...">
       <span class="kbd">⌘K</span>
     </div>
     <div class="sp"></div>
@@ -292,7 +293,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
         <p>SOPs, processes, and guides — all in one place for Eminence &amp; Co.</p>
         <div class="h-srch">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input placeholder="Search docs..." readonly>
+          <input placeholder="Search docs...">
         </div>
       </div>
       <div class="h-body">
@@ -741,10 +742,21 @@ function osd(t){document.getElementById('del-name').textContent=t;document.getEl
 function doAdd(){alert('Added "'+document.getElementById('add-name').value+'" (demo)');closeOv('ov-add')}
 function doDel(){alert('Deleted (demo)');closeOv('ov-del')}
 // EDIT PAGE
+const secMap={'Account Setup':'sec-acct','Stimuli Tracking & Testing':'sec-stim','Facebook Accounts':'sec-fbac'};
 function openEditPage(){document.getElementById('ov-ep').classList.add('show')}
 function doEP(){
   document.getElementById('folderTitle').textContent=document.getElementById('ep-title').value;
   document.getElementById('folderDesc').textContent=document.getElementById('ep-desc').value;
+  // collect remaining sections
+  const kept=Array.from(document.querySelectorAll('#ep-sections .ep-sec-row')).map(r=>r.dataset.sec);
+  // show/hide page sections
+  Object.entries(secMap).forEach(([name,id])=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=kept.includes(name)?'':'none';
+  });
+  // rebuild TOC
+  const toc=document.querySelector('#s-folder .ftoc');
+  toc.innerHTML='<div class="tocT">On This Page</div>'+kept.filter(n=>secMap[n]&&document.getElementById(secMap[n])?.style.display!=='none').map((n,i)=>`<a class="tocL${i===0?' act':''}" onclick="toSec('${secMap[n]||''}',this)">${n}</a>`).join('');
   closeOv('ov-ep');
 }
 function addSec(){
