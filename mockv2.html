@@ -8,9 +8,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#171717;--sidebar:#111;--card:#1e1e1e;--border:#2a2a2a;--border-h:#484848;
-  --text:#e8e8e8;--muted:#888;--dim:#555;--link:#5b9bd5;
-  --act:rgba(255,255,255,.07);--modal:#1e1e1e;--inp:#141414;--danger:#e74c3c;
+  --bg:#000;--sidebar:#0a0a0a;--card:#111;--border:#1e1e1e;--border-h:#3a3a3a;
+  --text:#e8e8e8;--muted:#888;--dim:#444;--link:#5b9bd5;
+  --act:rgba(255,255,255,.07);--modal:#111;--inp:#0a0a0a;--danger:#e74c3c;
 }
 [data-theme=light]{
   --bg:#f9f9f9;--sidebar:#fff;--card:#fff;--border:#e5e5e5;--border-h:#aaa;
@@ -80,7 +80,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .scr.on{display:flex}
 /* HOME */
 .hero{padding:48px 40px;text-align:center;border-bottom:1px solid var(--border)}
-[data-theme=dark] .hero{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%)}
+[data-theme=dark] .hero{background:linear-gradient(180deg,#1a1a1a 0%,#000 100%)}
 [data-theme=light] .hero{background:linear-gradient(135deg,#fdf6f0 0%,#e8f4f8 60%,#f0f8ff 100%)}
 .hero h1{font-size:28px;font-weight:700;margin-bottom:10px;letter-spacing:-.5px}
 .hero p{font-size:14px;color:var(--muted);margin-bottom:22px}
@@ -98,7 +98,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .hcard .hd{font-size:12px;color:var(--link)}
 /* FOLDER PAGE */
 .fl{display:flex;flex:1;overflow:hidden}
-.fc{flex:1;overflow-y:auto;padding:28px 32px}
+.fc{flex:1;overflow-y:auto;padding:28px 40px;max-width:860px}
 .ftoc{width:200px;min-width:200px;padding:26px 14px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0}
 .bc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-bottom:14px}
 .bc a{color:var(--muted);text-decoration:none;cursor:pointer}
@@ -113,15 +113,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .sb2{margin-bottom:28px}
 .st{font-size:20px;font-weight:600;margin-bottom:5px}
 .sd{font-size:13px;color:var(--muted);margin-bottom:12px}
-.dcg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.dc{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:13px 15px;display:flex;align-items:center;gap:10px;transition:border-color .15s;cursor:pointer}
+.dcg{display:flex;flex-wrap:wrap;gap:8px}
+.dc{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:13px 15px;display:flex;align-items:center;gap:14px;transition:border-color .15s;cursor:pointer;flex:1 1 280px;min-width:0}
 .dc:hover{border-color:var(--border-h)}
-.dc .di{flex:1}
-.dc .dn{font-size:13px;font-weight:600}
+.dc .di{flex:1;min-width:0}
+.dc .dn{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dc .dm{font-size:11px;color:var(--muted);margin-top:2px}
 .dc .db{background:var(--card);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:5px;font-size:11px;font-family:inherit;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;transition:background .12s}
 .dc .db:hover{background:var(--act)}
-.dc .db.sheet{color:var(--link);border-color:var(--link)}
 /* TOC */
 .tocT{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .tocL{display:block;font-size:12px;color:var(--muted);padding:4px 0 4px 8px;cursor:pointer;text-decoration:none;transition:color .12s;border-left:2px solid transparent;margin-left:-8px}
@@ -183,6 +182,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 .dz svg{width:28px;height:28px;stroke:var(--muted);margin:0 auto 8px;display:block}
 .dz-t{font-size:13px;color:var(--muted)}
 .dz-s{font-size:11px;color:var(--dim);margin-top:3px}
+.ep-sec-row{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--inp);border:1px solid var(--border);border-radius:5px}
 .fi{display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--inp);border-radius:5px;margin-bottom:4px;font-size:12px}
 .fi-n{flex:1;color:var(--text)}
 .fi-x{background:0;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;line-height:1}
@@ -258,7 +258,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     </button>
     <div class="gmenu" id="gmenu">
-      <div class="gmi" onclick="toggleEdit()">Edit sidebar</div>
+      <div class="gmi" id="gmi-edit" onclick="toggleEdit()" style="display:flex;align-items:center;gap:8px">Edit sidebar <span style="margin-left:auto;font-size:11px;padding:1px 7px;border-radius:10px;background:var(--border);color:var(--muted)">OFF</span></div>
     </div>
   </div>
 </aside>
@@ -380,7 +380,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
               </div>
               <div class="dc">
                 <div class="di"><div class="dn">FB Tracking Sheet</div><div class="dm">Google Sheets — opens externally</div></div>
-                <button class="db sheet" onclick="window.open('https://sheets.google.com','_blank')">Open Sheet &#8599;</button>
+                <button class="db" onclick="window.open('https://sheets.google.com','_blank')">View link <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
               </div>
             </div>
           </div>
@@ -538,12 +538,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);displ
 </div>
 <!-- EDIT PAGE -->
 <div class="ov" id="ov-ep">
-  <div class="mod" style="min-width:340px">
+  <div class="mod" style="min-width:400px;max-width:500px">
     <div class="mod-t">Edit Page</div>
     <label class="lbl">Page title</label>
     <input class="inp" id="ep-title" type="text" value="FB Outreach">
     <label class="lbl">Description</label>
     <input class="inp" id="ep-desc" type="text" value="Facebook outreach channel — SOPs, variables, and tracking guides for the FB appointment booking channel.">
+    <label class="lbl" style="margin-bottom:8px">Sections <span style="font-weight:400;color:var(--dim)">(sub-categories on this page)</span></label>
+    <div id="ep-sections" style="margin-bottom:10px;display:flex;flex-direction:column;gap:4px">
+      <div class="ep-sec-row" data-sec="Account Setup"><span style="flex:1;font-size:13px">Account Setup</span><button class="ecb" onclick="rmSec(this)" style="width:22px;height:22px">−</button></div>
+      <div class="ep-sec-row" data-sec="Stimuli Tracking &amp; Testing"><span style="flex:1;font-size:13px">Stimuli Tracking &amp; Testing</span><button class="ecb" onclick="rmSec(this)" style="width:22px;height:22px">−</button></div>
+      <div class="ep-sec-row" data-sec="Facebook Accounts"><span style="flex:1;font-size:13px">Facebook Accounts</span><button class="ecb" onclick="rmSec(this)" style="width:22px;height:22px">−</button></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <input class="inp" id="ep-new-sec" type="text" placeholder="New section name..." style="margin-bottom:0;flex:1">
+      <button class="mbtn mbtn-s" onclick="addSec()" style="padding:7px 12px;white-space:nowrap">+ Add</button>
+    </div>
     <div class="ma">
       <button class="mbtn mbtn-s" onclick="closeOv('ov-ep')">Cancel</button>
       <button class="mbtn mbtn-p" onclick="doEP()">Save</button>
@@ -600,7 +610,7 @@ function renderPicker(id){
     const hasCh=Object.keys(node[k]).length>0;
     const row=document.createElement('div');
     row.className='fkr-item';
-    row.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:.5;flex-shrink:0"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg><span class="fil">${k}</span>${hasCh?`<span class="fie">Open <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></span>`:''}<button class="fis" onclick="event.stopPropagation();selLoc('${id}','${k}')">Select</button>`;
+    row.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="opacity:.5;flex-shrink:0"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg><span class="fil">${k}</span><button class="fis" onclick="event.stopPropagation();selLoc('${id}','${k}')">Move</button>`;
     if(hasCh) row.addEventListener('click',()=>{pPath[id].push(k);renderPicker(id)});
     list.appendChild(row);
   });
@@ -668,8 +678,11 @@ function toggleNI(el,ncId){
 function toggleGear(){document.getElementById('gmenu').classList.toggle('show')}
 document.addEventListener('click',e=>{if(!e.target.closest('.sb-foot'))document.getElementById('gmenu').classList.remove('show')});
 // EDIT MODE
+let editOn=false;
 function toggleEdit(){
-  document.getElementById('sb').classList.toggle('edit-mode');
+  editOn=!editOn;
+  document.getElementById('sb').classList.toggle('edit-mode',editOn);
+  document.getElementById('gmi-edit').innerHTML=`Edit sidebar <span style="margin-left:auto;font-size:11px;padding:1px 7px;border-radius:10px;background:${editOn?'#22c55e':'var(--border)'};color:${editOn?'#fff':'var(--muted)'}">${editOn?'ON':'OFF'}</span>`;
   document.getElementById('gmenu').classList.remove('show');
 }
 // OVERLAYS
@@ -734,6 +747,18 @@ function doEP(){
   document.getElementById('folderDesc').textContent=document.getElementById('ep-desc').value;
   closeOv('ov-ep');
 }
+function addSec(){
+  const inp=document.getElementById('ep-new-sec');
+  const name=inp.value.trim();
+  if(!name)return;
+  const row=document.createElement('div');
+  row.className='ep-sec-row';
+  row.dataset.sec=name;
+  row.innerHTML=`<span style="flex:1;font-size:13px">${name}</span><button class="ecb" onclick="rmSec(this)" style="width:22px;height:22px">−</button>`;
+  document.getElementById('ep-sections').appendChild(row);
+  inp.value='';
+}
+function rmSec(btn){btn.closest('.ep-sec-row').remove()}
 // TOC
 function toSec(id,el){
   document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
