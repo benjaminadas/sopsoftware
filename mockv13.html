@@ -191,7 +191,14 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
 .dl{display:flex;flex:1;min-height:0;overflow-y:auto}
 .dcon{flex:1;padding:28px 30px 28px 0;margin-left:clamp(30px,8vw,150px);max-width:800px}
 .dtoc{width:260px;min-width:220px;padding:26px 14px 26px 16px;flex-shrink:0}
+.dtoc-sticky{position:sticky;top:26px;display:flex;flex-direction:column;gap:10px}
 .dtoc-inner{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.ver-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.ver-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .12s;margin:1px 0}
+.ver-item:hover,.ver-item.act{background:var(--act)}
+.ver-lbl{font-size:13px;font-weight:600;color:var(--text)}
+.ver-badge{font-size:11px;color:#22c55e;background:rgba(34,197,94,.12);padding:1px 7px;border-radius:10px;flex-shrink:0}
+.ver-meta{font-size:11px;color:var(--muted);margin-left:auto}
 .dmr{display:flex;align-items:center;gap:10px;margin-bottom:22px;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .dms{opacity:.3}
 .dhb{margin-left:auto;background:0;border:1px solid var(--border);color:var(--muted);padding:4px 11px;border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;transition:background .12s}
@@ -209,6 +216,31 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
 .dbody li{margin-bottom:4px}
 .dbody a{color:var(--link);text-decoration:underline}
 .dbody strong{font-weight:600}
+/* RICH TEXT TOOLBAR */
+.rt-toolbar{display:none;align-items:center;flex-wrap:nowrap;gap:1px;padding:4px 10px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;z-index:13;overflow-x:auto}
+.rt-toolbar.show{display:flex}
+.rt-toolbar::-webkit-scrollbar{height:0}
+.rt-grp{display:flex;align-items:center;gap:1px;flex-shrink:0}
+.rt-div{width:1px;height:18px;background:var(--border);margin:0 3px;flex-shrink:0}
+.rt-btn{background:0;border:none;color:var(--text);cursor:pointer;padding:3px 5px;border-radius:4px;font-size:13px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:2px;min-width:24px;height:24px;transition:background .1s;flex-shrink:0}
+.rt-btn:hover,.rt-btn.on{background:var(--act)}
+.rt-sel-w{position:relative;flex-shrink:0}
+.rt-sel{display:flex;align-items:center;gap:3px;cursor:pointer;background:0;border:1px solid transparent;color:var(--text);padding:2px 6px;border-radius:4px;font-size:12px;font-family:inherit;height:24px;white-space:nowrap;transition:background .1s}
+.rt-sel:hover{background:var(--act)}
+.rt-dd{display:none;position:absolute;top:calc(100% + 3px);left:0;background:var(--modal);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.5);z-index:700;min-width:140px;padding:4px;max-height:300px;overflow-y:auto}
+.rt-dd.show{display:block}
+.rt-ddi{padding:6px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--text);white-space:nowrap;transition:background .1s;display:block}
+.rt-ddi:hover{background:var(--act)}
+.rt-sz-inp{width:30px;background:var(--inp);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;text-align:center;padding:2px;height:24px;outline:none;font-family:inherit}
+.rt-sz-inp::-webkit-inner-spin-button,.rt-sz-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.rt-cp-w{position:relative;flex-shrink:0}
+.rt-cp{display:none;position:absolute;top:calc(100% + 3px);left:0;background:var(--modal);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.5);z-index:700;padding:10px}
+.rt-cp.show{display:block}
+.rt-cp-grid{display:grid;grid-template-columns:repeat(10,18px);gap:3px;margin-bottom:6px}
+.rt-cp-sw{width:18px;height:18px;border-radius:50%;cursor:pointer;transition:transform .1s;border:1px solid transparent}
+.rt-cp-sw:hover{transform:scale(1.25)}
+.rt-cbar{display:block;width:14px;height:3px;border-radius:1px;margin-top:1px}
+[data-theme=light] .rt-toolbar{background:var(--card)}
 /* MODALS */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;display:none;align-items:center;justify-content:center}
 [data-theme=light] .ov{background:rgba(0,0,0,.35)}
@@ -262,39 +294,6 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
 .fi-n{flex:1;color:var(--text)}
 .fi-x{background:0;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;line-height:1}
 .fi-x:hover{color:var(--danger)}
-
-/* RICH TEXT TOOLBAR */
-.rt-toolbar{display:none;align-items:center;flex-wrap:nowrap;gap:1px;padding:4px 10px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;z-index:13;overflow-x:auto}
-.rt-toolbar.show{display:flex}
-.rt-toolbar::-webkit-scrollbar{height:0}
-.rt-grp{display:flex;align-items:center;gap:1px;flex-shrink:0}
-.rt-div{width:1px;height:18px;background:var(--border);margin:0 3px;flex-shrink:0}
-.rt-btn{background:0;border:none;color:var(--text);cursor:pointer;padding:3px 5px;border-radius:4px;font-size:13px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:2px;min-width:24px;height:24px;transition:background .1s;flex-shrink:0}
-.rt-btn:hover,.rt-btn.on{background:var(--act)}
-.rt-sel-w{position:relative;flex-shrink:0}
-.rt-sel{display:flex;align-items:center;gap:3px;cursor:pointer;background:0;border:1px solid transparent;color:var(--text);padding:2px 6px;border-radius:4px;font-size:12px;font-family:inherit;height:24px;white-space:nowrap;transition:background .1s}
-.rt-sel:hover{background:var(--act)}
-.rt-dd{display:none;position:absolute;top:calc(100% + 3px);left:0;background:var(--modal);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.5);z-index:700;min-width:140px;padding:4px;max-height:300px;overflow-y:auto}
-.rt-dd.show{display:block}
-.rt-ddi{padding:6px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--text);white-space:nowrap;transition:background .1s}
-.rt-ddi:hover{background:var(--act)}
-.rt-sz-inp{width:30px;background:var(--inp);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;text-align:center;padding:2px;height:24px;outline:none;font-family:inherit}
-.rt-sz-inp::-webkit-inner-spin-button,.rt-sz-inp::-webkit-outer-spin-button{-webkit-appearance:none}
-.rt-cp-w{position:relative;flex-shrink:0}
-.rt-cp{display:none;position:absolute;top:calc(100% + 3px);left:0;background:var(--modal);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.5);z-index:700;padding:10px}
-.rt-cp.show{display:block}
-.rt-cp-grid{display:grid;grid-template-columns:repeat(10,18px);gap:3px}
-.rt-cp-sw{width:18px;height:18px;border-radius:50%;cursor:pointer;transition:transform .1s;border:1px solid transparent}
-.rt-cp-sw:hover{transform:scale(1.25)}
-.rt-cbar{display:block;width:14px;height:3px;border-radius:1px;margin-top:1px}
-/* VERSION PANEL */
-.dtoc-sticky{position:sticky;top:26px;display:flex;flex-direction:column;gap:10px}
-.ver-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
-.ver-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .12s;margin:1px 0}
-.ver-item:hover,.ver-item.act{background:var(--act)}
-.ver-lbl{font-size:13px;font-weight:600;color:var(--text)}
-.ver-badge{font-size:11px;color:#22c55e;background:rgba(34,197,94,.12);padding:1px 7px;border-radius:10px;flex-shrink:0}
-.ver-meta{font-size:11px;color:var(--muted);margin-left:auto}
 </style>
 </head>
 <body>
@@ -735,40 +734,35 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
 
     <!-- DOC SCREEN -->
     <div class="scr" id="s-doc">
-      <!-- Rich Text Toolbar (shown when editing) -->
+      <!-- RICH TEXT TOOLBAR -->
       <div class="rt-toolbar" id="rt-toolbar">
         <!-- Text style -->
         <div class="rt-sel-w">
-          <button class="rt-sel" onclick="toggleRtDd('dd-style')">
-            <span id="rt-style-lbl">Normal text</span>
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
-          </button>
+          <button class="rt-sel" id="rt-style-btn" onclick="toggleRtDd('dd-style',this)"><span id="rt-style-lbl">Normal text</span><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg></button>
           <div class="rt-dd" id="dd-style">
             <div class="rt-ddi" style="font-size:13px" onclick="applyRtStyle('p','Normal text')">Normal text</div>
-            <div class="rt-ddi" style="font-size:22px;font-weight:700;letter-spacing:-.5px;padding:3px 10px" onclick="applyRtStyle('h1','Title')">Title</div>
+            <div class="rt-ddi" style="font-size:22px;font-weight:700;padding:4px 10px" onclick="applyRtStyle('h1','Title')">Title</div>
             <div class="rt-ddi" style="font-size:15px;color:var(--muted)" onclick="applyRtStyle('h2','Subtitle')">Subtitle</div>
             <div class="rt-ddi" style="font-size:18px;font-weight:700" onclick="applyRtStyle('h1','Heading 1')">Heading 1</div>
-            <div class="rt-ddi" style="font-size:15px;font-weight:700" onclick="applyRtStyle('h2','Heading 2')">Heading 2</div>
-            <div class="rt-ddi" style="font-size:13px;font-weight:700" onclick="applyRtStyle('h3','Heading 3')">Heading 3</div>
+            <div class="rt-ddi" style="font-size:16px;font-weight:700" onclick="applyRtStyle('h2','Heading 2')">Heading 2</div>
+            <div class="rt-ddi" style="font-size:14px;font-weight:700" onclick="applyRtStyle('h3','Heading 3')">Heading 3</div>
           </div>
         </div>
         <div class="rt-div"></div>
         <!-- Font family -->
         <div class="rt-sel-w">
-          <button class="rt-sel" onclick="toggleRtDd('dd-font')">
-            <span id="rt-font-lbl">Arial</span>
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
-          </button>
-          <div class="rt-dd" id="dd-font">
+          <button class="rt-sel" id="rt-font-btn" onclick="toggleRtDd('dd-font',this)"><span id="rt-font-lbl">Arial</span><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg></button>
+          <div class="rt-dd" id="dd-font" style="min-width:160px">
             <div class="rt-ddi" style="font-family:Arial" onclick="applyRtFont('Arial')">Arial</div>
             <div class="rt-ddi" onclick="applyRtFont('Calibri')">Calibri</div>
             <div class="rt-ddi" style="font-family:'Comic Sans MS'" onclick="applyRtFont('Comic Sans MS')">Comic Sans MS</div>
             <div class="rt-ddi" style="font-family:'Courier New'" onclick="applyRtFont('Courier New')">Courier New</div>
             <div class="rt-ddi" style="font-family:Georgia" onclick="applyRtFont('Georgia')">Georgia</div>
             <div class="rt-ddi" style="font-family:Impact;font-weight:700" onclick="applyRtFont('Impact')">Impact</div>
-            <div class="rt-ddi" onclick="applyRtFont('Montserrat')">Montserrat</div>
+            <div class="rt-ddi" style="font-family:Montserrat" onclick="applyRtFont('Montserrat')">Montserrat</div>
             <div class="rt-ddi" style="font-family:'Times New Roman'" onclick="applyRtFont('Times New Roman')">Times New Roman</div>
             <div class="rt-ddi" style="font-family:Verdana" onclick="applyRtFont('Verdana')">Verdana</div>
+            <div class="rt-ddi" style="font-family:Roboto" onclick="applyRtFont('Roboto')">Roboto</div>
           </div>
         </div>
         <div class="rt-div"></div>
@@ -779,11 +773,11 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
           <button class="rt-btn" onclick="rtSzDelta(1)" title="Increase font size">+</button>
         </div>
         <div class="rt-div"></div>
-        <!-- B I U -->
+        <!-- Bold Italic Underline -->
         <div class="rt-grp">
-          <button class="rt-btn" onclick="rtExec('bold')" title="Bold" style="font-weight:700;font-size:14px">B</button>
-          <button class="rt-btn" onclick="rtExec('italic')" title="Italic" style="font-style:italic;font-size:14px">I</button>
-          <button class="rt-btn" onclick="rtExec('underline')" title="Underline" style="text-decoration:underline;font-size:14px">U</button>
+          <button class="rt-btn" id="rt-b" onclick="rtExec('bold')" title="Bold" style="font-weight:700;font-size:14px">B</button>
+          <button class="rt-btn" id="rt-i" onclick="rtExec('italic')" title="Italic" style="font-style:italic;font-size:14px">I</button>
+          <button class="rt-btn" id="rt-u" onclick="rtExec('underline')" title="Underline" style="text-decoration:underline;font-size:14px">U</button>
         </div>
         <div class="rt-div"></div>
         <!-- Text color -->
@@ -797,7 +791,7 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
         <!-- Highlight -->
         <div class="rt-cp-w">
           <button class="rt-btn" onclick="toggleRtCp('cp-hl')" title="Highlight" style="flex-direction:column;height:26px;padding:2px 4px;gap:1px">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             <span class="rt-cbar" id="hl-bar" style="background:transparent;border:1px solid var(--dim)"></span>
           </button>
           <div class="rt-cp" id="cp-hl"><div class="rt-cp-grid" id="cg-hl"></div></div>
@@ -805,17 +799,13 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
         <div class="rt-div"></div>
         <!-- Link + Image -->
         <div class="rt-grp">
-          <button class="rt-btn" onclick="rtInsLink()" title="Insert link">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-          </button>
-          <button class="rt-btn" onclick="rtInsImg()" title="Insert image">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
-          </button>
+          <button class="rt-btn" onclick="rtInsLink()" title="Insert link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
+          <button class="rt-btn" onclick="rtInsImg()" title="Insert image"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></button>
         </div>
         <div class="rt-div"></div>
         <!-- Alignment -->
         <div class="rt-sel-w">
-          <button class="rt-btn" onclick="toggleRtDd('dd-align')" title="Alignment">
+          <button class="rt-btn" onclick="toggleRtDd('dd-align',this)" title="Alignment">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
             <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
           </button>
@@ -828,8 +818,8 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
         </div>
         <!-- Line spacing -->
         <div class="rt-sel-w">
-          <button class="rt-btn" onclick="toggleRtDd('dd-ls')" title="Line spacing">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="5" x2="21" y2="5"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="13" x2="21" y2="13"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+          <button class="rt-btn" onclick="toggleRtDd('dd-ls',this)" title="Line spacing">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="14" x2="21" y2="14"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
           </button>
           <div class="rt-dd" id="dd-ls" style="min-width:120px">
@@ -837,34 +827,35 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
             <div class="rt-ddi" onclick="rtLineSpace('1.15')">1.15</div>
             <div class="rt-ddi" onclick="rtLineSpace('1.5')">1.5</div>
             <div class="rt-ddi" onclick="rtLineSpace('2')">Double</div>
+            <hr style="margin:4px 0;border:none;border-top:1px solid var(--border)">
+            <div class="rt-ddi" onclick="rtLineSpace('1.15')">Add space before paragraph</div>
+            <div class="rt-ddi" onclick="rtLineSpace('1.15')">Add space after paragraph</div>
           </div>
         </div>
         <div class="rt-div"></div>
         <!-- Checklist -->
-        <button class="rt-btn" onclick="rtChecklist()" title="Checklist">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        </button>
+        <button class="rt-btn" onclick="rtChecklist()" title="Checklist"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></button>
         <!-- Bullet list -->
         <div class="rt-sel-w">
-          <button class="rt-btn" onclick="toggleRtDd('dd-ul')" title="Bullet list">
+          <button class="rt-btn" onclick="toggleRtDd('dd-ul',this)" title="Bullet list">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
             <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
           </button>
-          <div class="rt-dd" id="dd-ul" style="min-width:120px">
+          <div class="rt-dd" id="dd-ul" style="min-width:130px">
             <div class="rt-ddi" onclick="rtList('disc')">&#x2022; Disc</div>
             <div class="rt-ddi" onclick="rtList('circle')">&#x25E6; Circle</div>
             <div class="rt-ddi" onclick="rtList('square')">&#x25AA; Square</div>
-            <div class="rt-ddi" onclick="rtList('disclosure-open')">&#x25B6; Arrow</div>
-            <div class="rt-ddi" onclick="rtList('disclosure-closed')">&#x25B8; Small arrow</div>
+            <div class="rt-ddi" onclick="rtList('disclosure-open')">&#x25B8; Arrow</div>
+            <div class="rt-ddi" onclick="rtList('disclosure-closed')">&#x25C9; Diamond</div>
           </div>
         </div>
         <!-- Numbered list -->
         <div class="rt-sel-w">
-          <button class="rt-btn" onclick="toggleRtDd('dd-ol')" title="Numbered list">
+          <button class="rt-btn" onclick="toggleRtDd('dd-ol',this)" title="Numbered list">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
             <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6,9 12,15 18,9"/></svg>
           </button>
-          <div class="rt-dd" id="dd-ol" style="min-width:130px">
+          <div class="rt-dd" id="dd-ol" style="min-width:140px">
             <div class="rt-ddi" onclick="rtOList('decimal')">1. 2. 3.</div>
             <div class="rt-ddi" onclick="rtOList('lower-alpha')">a. b. c.</div>
             <div class="rt-ddi" onclick="rtOList('upper-alpha')">A. B. C.</div>
@@ -874,19 +865,13 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
           </div>
         </div>
         <div class="rt-div"></div>
-        <!-- Indent decrease/increase -->
+        <!-- Indent -->
         <div class="rt-grp">
-          <button class="rt-btn" onclick="rtExec('outdent')" title="Decrease indent">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7,8 3,12 7,16"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg>
-          </button>
-          <button class="rt-btn" onclick="rtExec('indent')" title="Increase indent">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5,8 9,12 5,16"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg>
-          </button>
+          <button class="rt-btn" onclick="rtExec('outdent')" title="Decrease indent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7,8 3,12 7,16"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg></button>
+          <button class="rt-btn" onclick="rtExec('indent')" title="Increase indent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5,8 9,12 5,16"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg></button>
         </div>
         <!-- Clear formatting -->
-        <button class="rt-btn" onclick="rtExec('removeFormat')" title="Clear formatting">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7l4-4 10 10-4 4L4 7z"/><line x1="6" y1="17" x2="14" y2="17"/></svg>
-        </button>
+        <button class="rt-btn" onclick="rtExec('removeFormat')" title="Clear formatting"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7l4-4 10 10-4 4L4 7z"/><line x1="6" y1="17" x2="14" y2="17"/></svg></button>
       </div>
       <div class="save-banner" id="save-banner">
         <div class="save-banner-msg">Unsaved changes <span>— editing in progress</span></div>
@@ -904,12 +889,8 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
           <h1 class="pt" style="margin-bottom:12px">Account Setup SOP</h1>
           <div class="dmr">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-            SOP-SYS-FB-002<span class="dms">&#183;</span>Owner: Ben<span class="dms">&#183;</span><span id="doc-ver-display">v3</span>
-            <button class="dhb" onclick="makeNewVersion()" style="margin-left:auto;display:flex;align-items:center;gap:4px">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              New version
-            </button>
-            <button class="dhb" style="display:flex;align-items:center;gap:5px" onclick="openDocEdit()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit doc</button>
+            SOP-SYS-FB-002<span class="dms">·</span>Owner: Ben<span class="dms">·</span><span id="doc-ver-display">v3</span>
+            <button class="dhb" onclick="makeNewVersion()" style="margin-left:auto;display:flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> New version</button><button class="dhb" style="display:flex;align-items:center;gap:5px" onclick="openDocEdit()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit doc</button>
           </div>
           <div class="dbody" id="dbody">
             <h2 id="d1">1. Purpose &amp; Scope</h2>
@@ -917,7 +898,7 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
             <h2 id="d2">2. Roles &amp; Responsibilities</h2>
             <ul><li><strong>Account Manager</strong> — Creates and configures the FB account</li><li><strong>Team Lead</strong> — Reviews and approves account setup</li><li><strong>Admin</strong> — Provides access credentials and permissions</li></ul>
             <h2 id="d3">3. Tools Required</h2>
-            <ul><li>Facebook Business Manager — <a href="https://business.facebook.com">business.facebook.com</a></li><li>Tracking spreadsheet — <a href="#">Google Sheets link</a></li><li>Internal CRM dashboard</li></ul>
+            <ul><li>Facebook Business Manager — <a href="#">business.facebook.com</a></li><li>Tracking spreadsheet — <a href="#">Google Sheets link</a></li><li>Internal CRM dashboard</li></ul>
             <h2 id="d4">4. Procedure</h2>
             <h3>Step 1: Create Business Manager Account</h3>
             <p>Navigate to Business Manager and click "Create Account". Fill in the business name exactly as "Eminence &amp; Co" and use the primary admin email.</p>
@@ -1041,7 +1022,6 @@ body.home-active [data-theme=dark] .hero{background:transparent!important}
     </div>
   </div>
 </div>
-<!-- Version history replaced by inline panel -->
 <!-- SAVE CONFIRM -->
 <div class="ov" id="ov-save-confirm">
   <div class="mod" style="min-width:320px;max-width:380px">
@@ -1358,20 +1338,12 @@ function toDoc(id,el){
   document.querySelectorAll('#s-doc .tocL').forEach(l=>l.classList.remove('act'));
   el.classList.add('act');
 }
-// TOAST
-function showToast(msg){
-  const t=document.createElement('div');
-  t.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:2000;pointer-events:none;opacity:1;transition:opacity .4s';
-  t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),400)},1800);
-}
 // DOC EDIT
 function openDocEdit(){
   document.getElementById('rt-toolbar').classList.add('show');
   document.getElementById('save-banner').classList.add('show');
-  document.getElementById('dbody').setAttribute('contenteditable','true');
-  document.getElementById('dbody').style.outline='none';
+  var body=document.getElementById('dbody');
+  body.setAttribute('contenteditable','true');body.style.outline='none';
 }
 function discardDocEdit(){
   document.getElementById('rt-toolbar').classList.remove('show');
@@ -1385,170 +1357,162 @@ function confirmDocSave(){
   document.getElementById('save-banner').classList.remove('show');
   document.getElementById('dbody').removeAttribute('contenteditable');
   closeAllRtUi();
-  // bump version on save
-  const maxN=Math.max(...verList.map(v=>v.n));
-  const newN=maxN+1;
-  latestVer=newN;
-  const savedContent=document.getElementById('dbody').innerHTML;
-  verContent[newN]=savedContent;
-  verList.push({n:newN,date:'just now',by:'Ben'});
-  curVer=newN;
-  document.getElementById('doc-ver-display').textContent='v'+newN;
-  renderVerPanel();
-  showToast('Saved — v'+newN+' created ✓');
+  showToast('Saved ✓');
 }
+
 // VERSION DATA
-let verList=[
+var verList=[
   {n:1,date:'3 weeks ago',by:'Ben'},
   {n:2,date:'1 week ago',by:'Ben'},
   {n:3,date:'2 days ago',by:'Ben'}
 ];
-let latestVer=3;
-let curVer=3;
-const verContent={
-  1:`<h2 id="d1">1. Purpose &amp; Scope</h2><p>Initial draft: This SOP covers the process for setting up new Facebook outreach accounts for appointment booking campaigns.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> — Creates and configures the FB account</li><li><strong>Team Lead</strong> — Reviews account setup</li></ul><h2 id="d3">3. Procedure</h2><p>Navigate to Business Manager and create a new ad account. Set timezone to GMT and currency to GBP. Assign team members appropriate access levels.</p>`,
-  2:`<h2 id="d1">1. Purpose &amp; Scope</h2><p>This SOP covers the full process for setting up new Facebook outreach accounts for appointment booking campaigns. It applies to all team members responsible for account creation and initial configuration.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> — Creates and configures the FB account</li><li><strong>Team Lead</strong> — Reviews and approves account setup</li><li><strong>Admin</strong> — Provides access credentials and permissions</li></ul><h2 id="d3">3. Tools Required</h2><ul><li>Facebook Business Manager — <a href="https://business.facebook.com">business.facebook.com</a></li><li>Tracking spreadsheet — <a href="#">Google Sheets link</a></li></ul><h2 id="d4">4. Procedure</h2><h3>Step 1: Create Business Manager Account</h3><p>Navigate to Business Manager and click "Create Account". Fill in the business name as "Eminence &amp; Co" and use the primary admin email.</p><h3>Step 2: Configure Ad Account</h3><p>Under Business Settings &gt; Ad Accounts, create a new ad account. Set timezone to GMT and currency to GBP.</p>`,
-  3:`<h2 id="d1">1. Purpose &amp; Scope</h2><p>This SOP covers the full process for setting up new Facebook outreach accounts for appointment booking campaigns. It applies to all team members responsible for account creation and initial configuration.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> — Creates and configures the FB account</li><li><strong>Team Lead</strong> — Reviews and approves account setup</li><li><strong>Admin</strong> — Provides access credentials and permissions</li></ul><h2 id="d3">3. Tools Required</h2><ul><li>Facebook Business Manager — <a href="https://business.facebook.com">business.facebook.com</a></li><li>Tracking spreadsheet — <a href="#">Google Sheets link</a></li><li>Internal CRM dashboard</li></ul><h2 id="d4">4. Procedure</h2><h3>Step 1: Create Business Manager Account</h3><p>Navigate to Business Manager and click "Create Account". Fill in the business name exactly as "Eminence &amp; Co" and use the primary admin email.</p><h3>Step 2: Configure Ad Account</h3><p>Under Business Settings &gt; Ad Accounts, click "Add" &gt; "Create a new ad account". Set timezone to GMT and currency to GBP.</p><h3>Step 3: Assign Permissions</h3><ul><li>Add team members with <strong>Advertiser</strong> access</li><li>Add Team Lead with <strong>Admin</strong> access</li><li>Verify all pixel permissions are granted</li></ul><h2 id="d5">5. Key Definitions</h2><ul><li><strong>BM</strong> — Business Manager</li><li><strong>Pixel</strong> — Facebook tracking code on landing pages</li><li><strong>CAPI</strong> — Conversions API for server-side tracking</li></ul>`
+var latestVer=3,curVer=3;
+var verContent={
+  1:'<h2 id="d1">1. Purpose &amp; Scope</h2><p>Initial draft: This SOP covers the process for setting up new Facebook outreach accounts for appointment booking campaigns.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> &#8212; Creates and configures the FB account</li><li><strong>Team Lead</strong> &#8212; Reviews account setup</li></ul><h2 id="d3">3. Procedure</h2><p>Navigate to Business Manager and create a new ad account. Set timezone to GMT and currency to GBP. Assign team members appropriate access levels.</p>',
+  2:'<h2 id="d1">1. Purpose &amp; Scope</h2><p>This SOP covers the full process for setting up new Facebook outreach accounts for appointment booking campaigns. It applies to all team members responsible for account creation and initial configuration.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> &#8212; Creates and configures the FB account</li><li><strong>Team Lead</strong> &#8212; Reviews and approves account setup</li><li><strong>Admin</strong> &#8212; Provides access credentials and permissions</li></ul><h2 id="d3">3. Tools Required</h2><ul><li>Facebook Business Manager &#8212; <a href="#">business.facebook.com</a></li><li>Tracking spreadsheet &#8212; <a href="#">Google Sheets link</a></li></ul><h2 id="d4">4. Procedure</h2><h3>Step 1: Create Business Manager Account</h3><p>Navigate to Business Manager and click &#8220;Create Account&#8221;. Fill in the business name as &#8220;Eminence &amp; Co&#8221; and use the primary admin email.</p><h3>Step 2: Configure Ad Account</h3><p>Under Business Settings &gt; Ad Accounts, create a new ad account. Set timezone to GMT and currency to GBP.</p>',
+  3:'<h2 id="d1">1. Purpose &amp; Scope</h2><p>This SOP covers the full process for setting up new Facebook outreach accounts for appointment booking campaigns. It applies to all team members responsible for account creation and initial configuration.</p><h2 id="d2">2. Roles &amp; Responsibilities</h2><ul><li><strong>Account Manager</strong> &#8212; Creates and configures the FB account</li><li><strong>Team Lead</strong> &#8212; Reviews and approves account setup</li><li><strong>Admin</strong> &#8212; Provides access credentials and permissions</li></ul><h2 id="d3">3. Tools Required</h2><ul><li>Facebook Business Manager &#8212; <a href="#">business.facebook.com</a></li><li>Tracking spreadsheet &#8212; <a href="#">Google Sheets link</a></li><li>Internal CRM dashboard</li></ul><h2 id="d4">4. Procedure</h2><h3>Step 1: Create Business Manager Account</h3><p>Navigate to Business Manager and click &#8220;Create Account&#8221;. Fill in the business name exactly as &#8220;Eminence &amp; Co&#8221; and use the primary admin email.</p><h3>Step 2: Configure Ad Account</h3><p>Under Business Settings &gt; Ad Accounts, click &#8220;Add&#8221; &gt; &#8220;Create a new ad account&#8221;. Set timezone to GMT and currency to GBP.</p><h3>Step 3: Assign Permissions</h3><ul><li>Add team members with <strong>Advertiser</strong> access</li><li>Add Team Lead with <strong>Admin</strong> access</li><li>Verify all pixel permissions are granted</li></ul><h2 id="d5">5. Key Definitions</h2><ul><li><strong>BM</strong> &#8212; Business Manager</li><li><strong>Pixel</strong> &#8212; Facebook tracking code on landing pages</li><li><strong>CAPI</strong> &#8212; Conversions API for server-side tracking</li></ul>'
 };
 function renderVerPanel(){
-  const box=document.getElementById('ver-list');
+  var box=document.getElementById('ver-list');
   if(!box)return;
   box.innerHTML='';
-  [...verList].reverse().forEach(v=>{
-    const isLatest=v.n===latestVer;
-    const isCur=v.n===curVer;
-    const row=document.createElement('div');
+  var sorted=[].concat(verList).reverse();
+  sorted.forEach(function(v){
+    var isLatest=(v.n===latestVer),isCur=(v.n===curVer);
+    var row=document.createElement('div');
     row.className='ver-item'+(isCur?' act':'');
-    row.innerHTML=`<span class="ver-lbl">v${v.n}</span>${isLatest?'<span class="ver-badge">Current</span>':''}<span class="ver-meta">${v.date}</span>`;
-    row.onclick=()=>jumpVer(v.n);
+    row.innerHTML='<span class="ver-lbl">v'+v.n+'</span>'+(isLatest?'<span class="ver-badge">Current</span>':'')+' <span class="ver-meta">'+v.date+'</span>';
+    (function(n){row.onclick=function(){jumpVer(n)};})(v.n);
     box.appendChild(row);
   });
 }
 function jumpVer(n){
   curVer=n;
-  document.getElementById('doc-ver-display').textContent='v'+n;
-  const c=verContent[n];
-  if(c)document.getElementById('dbody').innerHTML=c;
+  var vd=document.getElementById('doc-ver-display');
+  if(vd)vd.textContent='v'+n;
+  var content=verContent[n];
+  if(content){var body=document.getElementById('dbody');if(body)body.innerHTML=content;}
   renderVerPanel();
 }
 function makeNewVersion(){
-  const newN=latestVer+1;
-  latestVer=newN;
-  verContent[newN]=document.getElementById('dbody').innerHTML;
+  var newN=latestVer+1;
+  var body=document.getElementById('dbody');
+  verContent[newN]=body?body.innerHTML:verContent[latestVer];
   verList.push({n:newN,date:'just now',by:'Ben'});
-  curVer=newN;
-  document.getElementById('doc-ver-display').textContent='v'+newN;
+  latestVer=newN;curVer=newN;
+  var vd=document.getElementById('doc-ver-display');
+  if(vd)vd.textContent='v'+newN;
   renderVerPanel();
   showToast('v'+newN+' created');
 }
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:2000;pointer-events:none;opacity:1;transition:opacity .4s';
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='0';setTimeout(function(){t.remove()},400)},1800);
+}
 // RICH TEXT TOOLBAR
-const cpColors=['#000000','#434343','#666666','#999999','#b7b7b7','#cccccc','#d9d9d9','#efefef','#f3f3f3','#ffffff','#ff0000','#ff9900','#ffff00','#00ff00','#00ffff','#4a86e8','#0000ff','#9900ff','#ff00ff','#e6b8a2','#ea9999','#f9cb9c','#ffe599','#b6d7a8','#a2c4c9','#9fc5e8','#9999ff','#b4a7d6','#d5a6bd','#cc4125','#e06666','#f6b26b','#ffd966','#93c47d','#76a5af','#6fa8dc','#6d9eeb','#8e7cc3','#c27ba0','#a61c00','#cc0000','#e69138','#f1c232','#6aa84f','#45818e','#3d85c8','#3c78d8','#674ea7','#a64d79','#85200c','#990000','#b45f06','#bf9000','#38761d','#134f5c','#1155cc','#1c4587','#351c75','#741b47','#4c1130','#fce5cd','#fff2cc','#d9ead3','#d0e0e3','#cfe2f3','#c9daf8','#d9d2e9','#ead1dc','#f4cccc','#fff8e1'];
+var rtSzVal=11;
+var cpColors=['#000000','#434343','#666666','#999999','#b7b7b7','#cccccc','#d9d9d9','#efefef','#f3f3f3','#ffffff','#ff0000','#ff9900','#ffff00','#00ff00','#00ffff','#4a86e8','#0000ff','#9900ff','#ff00ff','#ff6d6d','#ea9999','#f9cb9c','#ffe599','#b6d7a8','#a2c4c9','#9fc5e8','#9999ff','#b4a7d6','#d5a6bd','#cc4125','#e06666','#f6b26b','#ffd966','#93c47d','#76a5af','#6fa8dc','#6d9eeb','#8e7cc3','#c27ba0','#a61c00','#cc0000','#e69138','#f1c232','#6aa84f','#45818e','#3d85c8','#3c78d8','#674ea7','#a64d79','#85200c','#990000','#b45f06','#bf9000','#38761d','#134f5c','#1155cc','#1c4587','#351c75','#741b47','#4c1130','#fce5cd','#fff2cc','#d9ead3','#d0e0e3','#cfe2f3','#c9daf8','#d9d2e9','#ead1dc','#f4cccc','#fff8e1'];
 function initCpGrids(){
-  ['cg-text','cg-hl'].forEach(id=>{
-    const g=document.getElementById(id);if(!g)return;
-    g.innerHTML='';
-    const isTc=id==='cg-text';
-    cpColors.forEach(c=>{
-      const s=document.createElement('div');
-      s.className='rt-cp-sw';s.style.background=c;
+  ['cg-text','cg-hl'].forEach(function(id){
+    var g=document.getElementById(id);if(!g)return;
+    var isTc=(id==='cg-text');g.innerHTML='';
+    cpColors.forEach(function(c){
+      var s=document.createElement('div');s.className='rt-cp-sw';s.style.background=c;
       if(c==='#ffffff')s.style.border='1px solid #ccc';
-      s.onclick=()=>isTc?rtApplyColor(c):rtApplyHl(c);
+      s.onclick=function(){isTc?rtApplyColor(c):rtApplyHl(c);};
       g.appendChild(s);
     });
   });
 }
-function toggleRtDd(id){
-  const dd=document.getElementById(id);
-  const open=dd.classList.contains('show');
-  closeAllRtUi();
-  if(!open)dd.classList.add('show');
+function toggleRtDd(id,btn){
+  var dd=document.getElementById(id),isOpen=dd.classList.contains('show');
+  closeAllRtUi();if(!isOpen)dd.classList.add('show');
 }
 function toggleRtCp(id){
-  const cp=document.getElementById(id);
-  const open=cp.classList.contains('show');
-  closeAllRtUi();
-  if(!open)cp.classList.add('show');
+  var cp=document.getElementById(id),isOpen=cp.classList.contains('show');
+  closeAllRtUi();if(!isOpen)cp.classList.add('show');
 }
 function closeAllRtUi(){
-  document.querySelectorAll('.rt-dd,.rt-cp').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.rt-dd,.rt-cp').forEach(function(d){d.classList.remove('show')});
 }
 function rtExec(cmd,val){
-  const b=document.getElementById('dbody');if(b)b.focus();
+  var body=document.getElementById('dbody');if(body)body.focus();
   document.execCommand(cmd,false,val||null);
 }
 function applyRtStyle(tag,label){
   rtExec('formatBlock',tag);
-  document.getElementById('rt-style-lbl').textContent=label;
+  var el=document.getElementById('rt-style-lbl');if(el)el.textContent=label;
   closeAllRtUi();
 }
 function applyRtFont(font){
   rtExec('fontName',font);
-  document.getElementById('rt-font-lbl').textContent=font;
+  var el=document.getElementById('rt-font-lbl');if(el)el.textContent=font;
   closeAllRtUi();
 }
-let rtSzVal=11;
 function rtSzDelta(d){
   rtSzVal=Math.max(6,Math.min(96,rtSzVal+d));
-  document.getElementById('rt-sz-inp').value=rtSzVal;
+  var inp=document.getElementById('rt-sz-inp');if(inp)inp.value=rtSzVal;
   rtExec('fontSize',4);
 }
-function rtSzSet(v){rtSzVal=Math.max(6,Math.min(96,parseInt(v)||11));rtExec('fontSize',4);}
+function rtSzSet(v){
+  rtSzVal=Math.max(6,Math.min(96,parseInt(v)||11));
+  rtExec('fontSize',4);
+}
 function rtApplyColor(c){
   rtExec('foreColor',c);
-  document.getElementById('tc-bar').style.background=c;
+  var bar=document.getElementById('tc-bar');if(bar)bar.style.background=c;
   closeAllRtUi();
 }
 function rtApplyHl(c){
   rtExec('hiliteColor',c);
-  document.getElementById('hl-bar').style.background=c;
+  var bar=document.getElementById('hl-bar');if(bar)bar.style.background=c;
   closeAllRtUi();
 }
 function rtAlign(cmd){rtExec(cmd);closeAllRtUi();}
 function rtLineSpace(v){
-  const sel=window.getSelection();
+  var sel=window.getSelection();
   if(sel&&sel.rangeCount){
-    const node=sel.getRangeAt(0).commonAncestorContainer;
-    const el=node.nodeType===3?node.parentElement:node;
-    const blk=el.closest('p,h1,h2,h3,h4,li')||el;
+    var node=sel.getRangeAt(0).commonAncestorContainer;
+    var el=node.nodeType===3?node.parentElement:node;
+    var blk=el.closest?el.closest('p,h1,h2,h3,h4,li'):el;
     if(blk)blk.style.lineHeight=v;
   }
   closeAllRtUi();
 }
 function rtChecklist(){
   rtExec('insertUnorderedList');
-  const sel=window.getSelection();
+  var sel=window.getSelection();
   if(sel&&sel.rangeCount){
-    const n=sel.getRangeAt(0).commonAncestorContainer;
-    const ul=(n.nodeType===3?n.parentElement:n).closest('ul');
-    if(ul){ul.style.listStyleType='none';ul.style.paddingLeft='4px';}
+    var li=sel.getRangeAt(0).commonAncestorContainer;
+    var ul=(li.nodeType===3?li.parentElement:li).closest?((li.nodeType===3?li.parentElement:li).closest('ul')):null;
+    if(ul){ul.style.listStyleType='none';ul.style.paddingLeft='0';}
   }
 }
 function rtList(style){
   rtExec('insertUnorderedList');
-  const sel=window.getSelection();
+  var sel=window.getSelection();
   if(sel&&sel.rangeCount){
-    const n=sel.getRangeAt(0).commonAncestorContainer;
-    const ul=(n.nodeType===3?n.parentElement:n).closest('ul');
+    var node=sel.getRangeAt(0).commonAncestorContainer;
+    var ul=(node.nodeType===3?node.parentElement:node).closest?((node.nodeType===3?node.parentElement:node).closest('ul')):null;
     if(ul)ul.style.listStyleType=style;
   }
   closeAllRtUi();
 }
 function rtOList(style){
   rtExec('insertOrderedList');
-  const sel=window.getSelection();
+  var sel=window.getSelection();
   if(sel&&sel.rangeCount){
-    const n=sel.getRangeAt(0).commonAncestorContainer;
-    const ol=(n.nodeType===3?n.parentElement:n).closest('ol');
+    var node=sel.getRangeAt(0).commonAncestorContainer;
+    var ol=(node.nodeType===3?node.parentElement:node).closest?((node.nodeType===3?node.parentElement:node).closest('ol')):null;
     if(ol)ol.style.listStyleType=style;
   }
   closeAllRtUi();
 }
-function rtInsLink(){
-  const url=prompt('Enter URL:');
-  if(url){const b=document.getElementById('dbody');if(b)b.focus();document.execCommand('createLink',false,url);}
-}
+function rtInsLink(){var url=prompt('Enter URL:');if(url)rtExec('createLink',url);}
 function rtInsImg(){alert('Insert image — demo only');}
-document.addEventListener('click',e=>{
+document.addEventListener('click',function(e){
   if(!e.target.closest('.rt-sel-w,.rt-cp-w,.rt-dd,.rt-cp'))closeAllRtUi();
 });
 // DOC SCROLL SPY
@@ -1572,7 +1536,6 @@ document.addEventListener('click',e=>{
     if(dl) dl.addEventListener('scroll',updateDocTOC,{passive:true});
   });
 })();
-// INIT
 initCpGrids();
 renderVerPanel();
 </script>
