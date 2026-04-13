@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Calendar, Film, TrendingUp, Box, Users, Lock, FileText, ChevronRight } from "lucide-react";
