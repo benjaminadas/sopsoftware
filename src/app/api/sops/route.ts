@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
   const {
     name, description, docType, funnelStage, owner, department, channel,
-    platform, content, versionName, changeNote, projectId, tagIds,
+    platform, content, versionName, changeNote, projectId, subfolderID, tagIds,
   } = parsed.data;
 
   const prefix = buildDocIdPrefix(docType, platform || undefined);
@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
       channel,
       platform,
       projectId: projectId || null,
+      subfolderID: subfolderID || null,
       currentVersion: 1,
       versions: {
         create: {

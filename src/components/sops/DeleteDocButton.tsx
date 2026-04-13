@@ -18,7 +18,7 @@ export function DeleteDocButton({ docId, docName }: DeleteDocButtonProps) {
     setDeleting(true);
     try {
       await fetch(`/api/sops/${docId}`, { method: "DELETE" });
-      router.push("/sops");
+      router.push("/");
       router.refresh();
     } finally {
       setDeleting(false);

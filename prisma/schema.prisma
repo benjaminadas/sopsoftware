@@ -6,52 +6,83 @@ datasource db {
   provider = "sqlite"
 }
 
-// A Project groups related documents (e.g. "FB DM Outreach", "IG Legion")
+model Category {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  icon        String?     // lucide icon name
+  order       Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  subfolders  Subfolder[]
+}
+
+model Subfolder {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  group       String?    // section group label on category page (e.g. "FB Outreach", "Outbound")
+  categoryId  String
+  order       Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  documents   Document[]
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+}
+
+// A Project groups related documents (legacy - kept for compatibility)
 model Project {
   id          String   @id @default(cuid())
   name        String
   description String?
-  platform    String?  // FB, IG, General, etc.
+  platform    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   documents   Document[]
 }
 
-// A Document is any piece of documentation: SOP, Global Variables, Learnings, Metrics, etc.
 model Document {
   id             String       @id @default(cuid())
-  docId          String       @unique  // e.g. SOP-SYS-IG-002, SYS-VARS-FB-003-FB
+  docId          String       @unique
   name           String
   description    String?
-  docType        String       @default("SOP")  // SOP | GLOBAL_VARS | LEARNINGS | METRICS | TEMPLATE_DOC
-  funnelStage    String       @default("General")  // free text: "Global – Messaging & Booking"
+  docType        String       @default("SOP")
+  funnelStage    String       @default("General")
   owner          String
-  department     String?      // e.g. "Systems / Operations"
-  channel        String?      // e.g. "Facebook DM", "Instagram DM"
-  platform       String?      // FB, IG, General
+  department     String?
+  channel        String?
+  platform       String?
   currentVersion Int          @default(1)
   projectId      String?
+  subfolderID    String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
   project        Project?     @relation(fields: [projectId], references: [id])
+  subfolder      Subfolder?   @relation(fields: [subfolderID], references: [id])
   versions       DocVersion[]
   tags           DocTag[]
 
   @@index([docType])
   @@index([funnelStage])
   @@index([projectId])
+  @@index([subfolderID])
   @@index([platform])
 }
 
 model DocVersion {
   id          String   @id @default(cuid())
   documentId  String
-  version     Int                       // 1, 2, 3...
-  versionName String?                   // e.g. "v3.0", "v1.1"
-  content     String                    // TipTap JSON
-  contentText String   @default("")     // plain text for search
+  version     Int
+  versionName String?
+  content     String
+  contentText String   @default("")
   changeNote  String?
   createdAt   DateTime @default(now())
   createdBy   String   @default("Admin")
@@ -80,19 +111,17 @@ model DocTag {
   @@id([documentId, tagId])
 }
 
-// Reusable starter templates
 model Template {
   id          String   @id @default(cuid())
   name        String
   description String?
   docType     String   @default("SOP")
-  content     String   // TipTap JSON
+  content     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-// Atomic counter for each doc ID prefix to avoid collisions
 model Counter {
-  id    String @id   // e.g. "SOP-SYS-IG", "SYS-VARS-FB"
+  id    String @id
   value Int    @default(0)
 }

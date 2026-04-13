@@ -1,95 +1,162 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FileText, LayoutTemplate, PlusCircle, BookOpen, ChevronRight, Folder } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { DOC_TYPES, DOC_TYPE_LABELS } from "@/lib/validations";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import {
+  ChevronRight, Settings, Calendar, Film, TrendingUp, Box, Users, Lock, FileText, Home
+} from "lucide-react";
 
-const DOC_TYPE_DOTS: Record<string, string> = {
-  SOP: "bg-blue-500",
-  GLOBAL_VARS: "bg-purple-500",
-  LEARNINGS: "bg-green-500",
-  METRICS: "bg-orange-500",
-  TEMPLATE_DOC: "bg-gray-400",
+type Subfolder = { id: string; name: string; slug: string; description: string | null; group: string | null; order: number };
+type Category  = { id: string; name: string; slug: string; description: string | null; icon: string | null; order: number; subfolders: Subfolder[] };
+
+const ICONS: Record<string, React.ReactNode> = {
+  Calendar:   <Calendar   size={15} />,
+  Film:       <Film       size={15} />,
+  TrendingUp: <TrendingUp size={15} />,
+  Box:        <Box        size={15} />,
+  Users:      <Users      size={15} />,
+  Lock:       <Lock       size={15} />,
+  FileText:   <FileText   size={15} />,
 };
 
 export function Sidebar() {
-  const pathname = usePathname();
+  const pathname  = usePathname();
+  const router    = useRouter();
+  const [cats, setCats]   = useState<Category[]>([]);
+  const [open, setOpen]   = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    fetch("/api/categories").then(r => r.json()).then((data: Category[]) => {
+      setCats(data);
+      // auto-expand category that matches current path
+      const match = data.find(c => pathname.startsWith(`/folder/${c.slug}`));
+      if (match) setOpen(prev => ({ ...prev, [match.id]: true }));
+    });
+  }, [pathname]);
+
+  const toggleCat = (id: string) => setOpen(prev => ({ ...prev, [id]: !prev[id] }));
+
+  const isActiveSub = (catSlug: string, subSlug: string) =>
+    pathname === `/folder/${catSlug}/${subSlug}`;
+
+  const isActiveCat = (catSlug: string) =>
+    pathname === `/folder/${catSlug}`;
 
   return (
-    <aside className="w-60 border-r border-gray-200 bg-white flex flex-col h-full flex-shrink-0">
-      <div className="p-5 border-b border-gray-200">
-        <div className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-gray-900" />
-          <span className="font-bold text-gray-900">SOP Manager</span>
-        </div>
+    <aside style={{
+      width: 220,
+      minWidth: 220,
+      background: "#13131a",
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+      flexShrink: 0,
+      borderRight: "1px solid #1e1e2a",
+    }}>
+      {/* Logo */}
+      <div
+        onClick={() => router.push("/")}
+        style={{ padding: "16px 16px 14px", cursor: "pointer", borderBottom: "1px solid #1e1e2a" }}
+      >
+        <span style={{ fontWeight: 800, fontSize: 15, color: "#ffffff", letterSpacing: "-0.3px" }}>E&amp;C</span>
+        <span style={{ fontWeight: 400, fontSize: 15, color: "#555566", marginLeft: 4 }}>Docs</span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-3 space-y-5">
-        <div>
-          <Link
-            href="/sops/new"
-            className="flex items-center gap-2 w-full bg-gray-900 text-white rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-700 transition-colors"
-          >
-            <PlusCircle className="h-4 w-4" />
-            New Document
-          </Link>
-        </div>
-
-        <div>
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">Library</p>
-          <ul className="space-y-0.5">
-            <li>
-              <Link
-                href="/sops"
-                className={cn(
-                  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
-                  pathname === "/sops" && !pathname.includes("?")
-                    ? "bg-gray-100 text-gray-900 font-medium"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                )}
+      {/* Nav */}
+      <nav style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
+        {cats.map(cat => {
+          const isOpen   = !!open[cat.id];
+          const isCatAct = isActiveCat(cat.slug);
+          return (
+            <div key={cat.id}>
+              {/* Category row */}
+              <div
+                style={{ display: "flex", alignItems: "center", padding: "0 8px" }}
               >
-                <FileText className="h-4 w-4" />
-                All Documents
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/templates"
-                className={cn(
-                  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
-                  pathname.startsWith("/templates")
-                    ? "bg-gray-100 text-gray-900 font-medium"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                )}
-              >
-                <LayoutTemplate className="h-4 w-4" />
-                Templates
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">Doc Types</p>
-          <ul className="space-y-0.5">
-            {DOC_TYPES.map((type) => (
-              <li key={type}>
-                <Link
-                  href={`/sops?docType=${type}`}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                <button
+                  onClick={() => toggleCat(cat.id)}
+                  style={{
+                    background: "none", border: "none", cursor: "pointer", padding: "2px 4px 2px 2px",
+                    color: "#555566", display: "flex", alignItems: "center", flexShrink: 0,
+                    transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                    transition: "transform 0.15s",
+                  }}
+                  aria-label="expand"
                 >
-                  <span className={cn("h-2 w-2 rounded-full flex-shrink-0", DOC_TYPE_DOTS[type])} />
-                  <span className="truncate">{DOC_TYPE_LABELS[type as keyof typeof DOC_TYPE_LABELS]}</span>
+                  <ChevronRight size={13} />
+                </button>
+
+                <Link
+                  href={`/folder/${cat.slug}`}
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 7,
+                    padding: "6px 6px",
+                    borderRadius: 5,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: isCatAct ? "#ffffff" : "#bbbbcc",
+                    background: isCatAct ? "#1e1e2e" : "transparent",
+                    textDecoration: "none",
+                    transition: "background 0.1s, color 0.1s",
+                  }}
+                  onMouseEnter={e => { if (!isCatAct) (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
+                  onMouseLeave={e => { if (!isCatAct) (e.currentTarget as HTMLElement).style.color = "#bbbbcc"; }}
+                >
+                  <span style={{ color: "#555566", display: "flex", flexShrink: 0 }}>
+                    {ICONS[cat.icon || "FileText"] || <FileText size={15} />}
+                  </span>
+                  <span style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{cat.name}</span>
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+
+              {/* Subfolders */}
+              {isOpen && cat.subfolders.map(sub => {
+                const isAct = isActiveSub(cat.slug, sub.slug);
+                return (
+                  <Link
+                    key={sub.id}
+                    href={`/folder/${cat.slug}/${sub.slug}`}
+                    style={{
+                      display: "block",
+                      padding: "4px 8px 4px 38px",
+                      fontSize: 12,
+                      fontWeight: isAct ? 600 : 400,
+                      color: isAct ? "#ffffff" : "#888899",
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      borderRadius: 4,
+                      margin: "0 4px",
+                      background: isAct ? "#1e1e2e" : "transparent",
+                      transition: "color 0.1s, background 0.1s",
+                    }}
+                    onMouseEnter={e => { if (!isAct) { (e.currentTarget as HTMLElement).style.color = "#ddddee"; } }}
+                    onMouseLeave={e => { if (!isAct) { (e.currentTarget as HTMLElement).style.color = "#888899"; } }}
+                  >
+                    {sub.name}
+                  </Link>
+                );
+              })}
+            </div>
+          );
+        })}
       </nav>
 
-      <div className="p-4 border-t border-gray-200">
-        <p className="text-xs text-gray-400">SOP Manager v1.0</p>
+      {/* Footer */}
+      <div style={{ padding: "10px 14px", borderTop: "1px solid #1e1e2a", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: 12, color: "#555566" }}>Support</span>
+        <Link
+          href="/settings"
+          style={{ color: "#555566", display: "flex", textDecoration: "none" }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#aaaaaa")}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#555566")}
+        >
+          <Settings size={15} />
+        </Link>
       </div>
     </aside>
   );

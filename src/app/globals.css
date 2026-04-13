@@ -1,66 +1,117 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Theme variables ─────────────────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg2: #f7f7f8;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --card: #f9fafb;
+  --card-hover: #f0f0f2;
+  --accent: #2563eb;
+  --accent-muted: #dbeafe;
+  --success: #16a34a;
 }
+
+[data-theme="dark"] {
+  --bg: #0f0f13;
+  --bg2: #18181c;
+  --text: #e5e7eb;
+  --muted: #71717a;
+  --border: #27272a;
+  --card: #18181c;
+  --card-hover: #27272a;
+  --accent: #60a5fa;
+  --accent-muted: #1e3a5f;
+  --success: #4ade80;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+html, body { height: 100%; margin: 0; padding: 0; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  transition: background 0.15s, color 0.15s;
 }
 
-/* TipTap editor styles */
-.ProseMirror {
-  outline: none;
-  min-height: 500px;
-}
-
-.ProseMirror p.is-editor-empty:first-child::before {
-  color: #adb5bd;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
-}
-
-.ProseMirror h1 { font-size: 1.875rem; font-weight: 700; margin: 1rem 0 0.5rem; }
-.ProseMirror h2 { font-size: 1.5rem; font-weight: 600; margin: 1rem 0 0.5rem; }
-.ProseMirror h3 { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0 0.4rem; }
-.ProseMirror p { margin: 0.4rem 0; line-height: 1.7; }
-.ProseMirror ul, .ProseMirror ol { padding-left: 1.5rem; margin: 0.4rem 0; }
-.ProseMirror li { margin: 0.2rem 0; line-height: 1.7; }
-.ProseMirror blockquote { border-left: 3px solid #e5e7eb; padding-left: 1rem; color: #6b7280; margin: 0.5rem 0; }
-.ProseMirror hr { border: none; border-top: 2px solid #e5e7eb; margin: 1.5rem 0; }
-.ProseMirror strong { font-weight: 700; }
-.ProseMirror em { font-style: italic; }
-.ProseMirror code { background: #f3f4f6; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.875em; font-family: monospace; }
-.ProseMirror pre { background: #1f2937; color: #f9fafb; padding: 1rem; border-radius: 8px; overflow-x: auto; }
-.ProseMirror pre code { background: none; color: inherit; padding: 0; }
-
-/* Task list */
-.ProseMirror ul[data-type="taskList"] { list-style: none; padding-left: 0; }
-.ProseMirror ul[data-type="taskList"] li { display: flex; align-items: flex-start; gap: 0.5rem; }
-.ProseMirror ul[data-type="taskList"] li > label { margin-top: 0.2rem; }
-
-/* Table */
-.ProseMirror table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
-.ProseMirror td, .ProseMirror th { border: 1px solid #e5e7eb; padding: 0.5rem; min-width: 100px; }
-.ProseMirror th { background: #f9fafb; font-weight: 600; }
-
-/* Read-only rendered content */
-.doc-content h1 { font-size: 1.875rem; font-weight: 700; margin: 1rem 0 0.5rem; }
-.doc-content h2 { font-size: 1.5rem; font-weight: 600; margin: 1rem 0 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.25rem; }
-.doc-content h3 { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0 0.4rem; }
-.doc-content p { margin: 0.4rem 0; line-height: 1.7; }
-.doc-content ul, .doc-content ol { padding-left: 1.5rem; margin: 0.4rem 0; }
-.doc-content li { margin: 0.2rem 0; line-height: 1.7; }
-.doc-content blockquote { border-left: 3px solid #e5e7eb; padding-left: 1rem; color: #6b7280; margin: 0.5rem 0; }
-.doc-content hr { border: none; border-top: 2px solid #e5e7eb; margin: 1.5rem 0; }
-.doc-content strong { font-weight: 700; }
+/* ── TipTap / doc content ────────────────────────────────────────────────── */
+.doc-content h1 { font-size: 1.6rem; font-weight: 700; margin: 0 0 0.5rem; color: var(--text); }
+.doc-content h2 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.4rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+.doc-content h3 { font-size: 1.05rem; font-weight: 600; margin: 1.2rem 0 0.3rem; color: var(--text); }
+.doc-content p  { margin: 0.5rem 0; color: var(--text); }
+.doc-content ul, .doc-content ol { padding-left: 1.4rem; margin: 0.4rem 0 0.8rem; }
+.doc-content li { margin: 0.2rem 0; color: var(--text); }
+.doc-content blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.3rem 0.8rem; color: var(--muted); }
+.doc-content code { background: var(--card); border: 1px solid var(--border); padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.85em; font-family: "Fira Code", "Cascadia Code", monospace; }
+.doc-content pre  { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; }
+.doc-content pre code { background: none; border: none; padding: 0; font-size: 0.88em; }
+.doc-content table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; font-size: 0.9rem; }
+.doc-content th, .doc-content td { border: 1px solid var(--border); padding: 6px 10px; }
+.doc-content th { background: var(--card); font-weight: 600; }
+.doc-content a { color: var(--accent); text-decoration: underline; }
+.doc-content hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+.doc-content strong { font-weight: 600; }
 .doc-content em { font-style: italic; }
-.doc-content code { background: #f3f4f6; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.875em; font-family: monospace; }
-.doc-content table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
-.doc-content td, .doc-content th { border: 1px solid #e5e7eb; padding: 0.5rem; }
-.doc-content th { background: #f9fafb; font-weight: 600; }
+.doc-content s  { text-decoration: line-through; color: var(--muted); }
+.doc-content mark { background: #fef08a; color: #1a1a1a; padding: 0 2px; border-radius: 2px; }
+.doc-content [data-type="taskList"] { list-style: none; padding-left: 0; }
+.doc-content [data-type="taskItem"] { display: flex; align-items: flex-start; gap: 0.4rem; }
+.doc-content [data-type="taskItem"] > label { margin-top: 0.2rem; }
+
+/* ProseMirror editor */
+.ProseMirror { outline: none; min-height: 200px; }
+.ProseMirror h1 { font-size: 1.6rem; font-weight: 700; margin: 0 0 0.5rem; }
+.ProseMirror h2 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.4rem; }
+.ProseMirror h3 { font-size: 1.05rem; font-weight: 600; margin: 1.2rem 0 0.3rem; }
+.ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; color: var(--muted); pointer-events: none; height: 0; }
+.ProseMirror ul, .ProseMirror ol { padding-left: 1.4rem; }
+.ProseMirror blockquote { border-left: 3px solid var(--border); margin: 0.6rem 0; padding: 0.2rem 0.8rem; color: var(--muted); }
+.ProseMirror code { background: var(--card); border: 1px solid var(--border); padding: 0.1em 0.3em; border-radius: 4px; font-size: 0.85em; }
+.ProseMirror pre { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; }
+.ProseMirror pre code { background: none; border: none; padding: 0; }
+.ProseMirror table { border-collapse: collapse; width: 100%; }
+.ProseMirror th, .ProseMirror td { border: 1px solid var(--border); padding: 6px 10px; }
+.ProseMirror th { background: var(--card); font-weight: 600; }
+
+/* ── Hover cards ────────────────────────────────────────────────────────── */
+.hover-card {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: border-color 0.15s, background 0.15s;
+  text-decoration: none;
+}
+.hover-card:hover {
+  border-color: var(--accent);
+  background: var(--card);
+}
+
+/* ── Breadcrumb links ───────────────────────────────────────────────────── */
+.bc-link {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.1s;
+}
+.bc-link:hover { color: var(--text); }
+
+/* ── TOC links ──────────────────────────────────────────────────────────── */
+.toc-link {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 3px 0;
+  line-height: 1.4;
+  transition: color 0.1s;
+}
+.toc-link:hover { color: var(--text); }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

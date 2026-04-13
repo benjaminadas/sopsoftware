@@ -34,6 +34,7 @@ export const createDocumentSchema = z.object({
   versionName: z.string().max(20).optional(),
   changeNote: z.string().max(300).optional(),
   projectId: z.string().optional(),
+  subfolderID: z.string().optional(),
   tagIds: z.array(z.string()).default([]),
 });
 

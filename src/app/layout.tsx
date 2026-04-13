@@ -1,22 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { TopBar } from "@/components/layout/TopBar";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "SOP Manager",
-  description: "Documentation and SOP management system",
+  title: "E&C Docs",
+  description: "Documentation and SOP management system for Eminence & Co.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
-      <body className="h-full bg-gray-50">
-        <div className="flex h-full overflow-hidden">
+    <html lang="en" style={{ height: "100%" }}>
+      <body style={{ height: "100%", margin: 0, display: "flex", overflow: "hidden" }}>
+        <ThemeProvider>
           <Sidebar />
-          <main className="flex-1 overflow-y-auto">
-            {children}
-          </main>
-        </div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, height: "100%", overflow: "hidden" }}>
+            <TopBar />
+            <main style={{ flex: 1, overflowY: "auto", background: "var(--bg)" }}>
+              {children}
+            </main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
