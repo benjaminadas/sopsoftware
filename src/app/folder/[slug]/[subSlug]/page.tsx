@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ChevronRight, FileText } from "lucide-react";
 import { DOC_TYPE_LABELS } from "@/lib/validations";
+import { EditFolderButton } from "@/components/sops/EditFolderButton";
 
 interface Props { params: Promise<{ slug: string; subSlug: string }> }
 
@@ -46,20 +47,23 @@ export default async function SubfolderPage({ params }: Props) {
         </div>
 
         {/* Title row */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, gap: 12 }}>
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0, color: "var(--text)", letterSpacing: "-0.3px" }}>{sf.name}</h1>
-          <Link
-            href={`/docs/new?subfolderID=${sf.id}`}
-            style={{
-              fontSize: 12, fontWeight: 600, padding: "6px 12px",
-              borderRadius: 6, border: "1px solid var(--border)",
-              background: "var(--text)", color: "var(--bg)",
-              textDecoration: "none", whiteSpace: "nowrap",
-              display: "flex", alignItems: "center", gap: 5,
-            }}
-          >
-            + New doc
-          </Link>
+          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+            <EditFolderButton subfolderId={sf.id} initialName={sf.name} initialDescription={sf.description} />
+            <Link
+              href={`/docs/new?subfolderID=${sf.id}`}
+              style={{
+                fontSize: 12, fontWeight: 600, padding: "6px 12px",
+                borderRadius: 6, border: "1px solid var(--border)",
+                background: "var(--text)", color: "var(--bg)",
+                textDecoration: "none", whiteSpace: "nowrap",
+                display: "flex", alignItems: "center", gap: 5,
+              }}
+            >
+              + New doc
+            </Link>
+          </div>
         </div>
 
         {/* Description box */}

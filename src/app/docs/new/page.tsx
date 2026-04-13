@@ -23,8 +23,7 @@ function NewDocPageInner() {
 
   const [form, setForm] = useState({
     name: "", description: "", owner: "Ben Adams",
-    funnelStage: "General", department: "", channel: "", platform: "",
-    versionName: "v1.0", changeNote: "", subfolderID: preSubId,
+    versionName: "v1.0", subfolderID: preSubId,
   });
 
   useEffect(() => {
@@ -50,10 +49,8 @@ function NewDocPageInner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name, description: form.description,
-          docType, owner: form.owner, funnelStage: form.funnelStage,
-          department: form.department || undefined, channel: form.channel || undefined,
-          platform: form.platform || undefined,
-          versionName: form.versionName, changeNote: form.changeNote || undefined,
+          docType, owner: form.owner, funnelStage: "General",
+          versionName: form.versionName,
           content, subfolderID: form.subfolderID || undefined,
         }),
       });
@@ -140,10 +137,6 @@ function NewDocPageInner() {
               </select>
             </div>
 
-            {inp("Funnel Stage", "funnelStage", { placeholder: "e.g. Setup & Infrastructure" })}
-            {inp("Channel", "channel", { placeholder: "e.g. Facebook DM" })}
-            {inp("Platform", "platform", { placeholder: "e.g. FB, IG" })}
-            {inp("Department", "department", { placeholder: "e.g. Systems / Operations" })}
           </div>
         ) : (
           <div style={{ padding: "24px clamp(24px, 6vw, 80px)" }}>
